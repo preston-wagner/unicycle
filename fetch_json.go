@@ -2,9 +2,11 @@ package unicycle
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 type FetchOptions struct {
@@ -37,9 +39,15 @@ func FetchJson[OUTPUT_TYPE any](raw_url string, options FetchOptions) (OUTPUT_TY
 	for key, value := range options.Headers {
 		request.Header.Add(key, value)
 	}
-	response, err := http.DefaultClient.Do(request)
+	client := http.Client{
+		Timeout: time.Minute,
+	}
+	response, err := client.Do(request)
 	if err != nil {
 		return output, err
+	}
+	if (response.StatusCode < 200) || (300 <= response.StatusCode) {
+		return output, fmt.Errorf("non-2XX response status code: %d", response.StatusCode)
 	}
 	response_body_bytes, err := io.ReadAll(response.Body)
 	if err != nil {
