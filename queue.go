@@ -5,6 +5,7 @@ type element[VALUE_TYPE any] struct {
 	next  *element[VALUE_TYPE]
 }
 
+// A simple FIFO queue, implemented as a monodirectional linked list
 type Queue[VALUE_TYPE any] struct {
 	first  *element[VALUE_TYPE]
 	last   *element[VALUE_TYPE]
