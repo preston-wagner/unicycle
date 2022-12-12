@@ -16,7 +16,7 @@ func (queue *Queue[VALUE_TYPE]) Push(value VALUE_TYPE) int {
 	node := &element[VALUE_TYPE]{
 		value: value,
 	}
-	if queue.last == nil {
+	if queue.first == nil {
 		queue.first = node
 		queue.length = 1
 	} else {
@@ -36,6 +36,9 @@ func (queue *Queue[VALUE_TYPE]) Pop() VALUE_TYPE {
 		panic("runtime error: Pop() called on queue with length 0. Make sure to call queue.More() while iterating.")
 	} else {
 		value := queue.first.value
+		if queue.first == queue.last {
+			queue.last = nil
+		}
 		queue.first = queue.first.next
 		queue.length--
 		return value
