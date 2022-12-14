@@ -17,6 +17,10 @@ func (e *FetchJsonError) Error() string {
 	return e.Err.Error()
 }
 
+func (e *FetchJsonError) Unwrap() error {
+	return e.Err
+}
+
 func (e *FetchJsonError) LogResponseBody() {
 	if e.Response == nil {
 		log.Println("LogResponseBody() error: no response")
@@ -37,7 +41,7 @@ func NewFetchJsonError(err error, response *http.Response) *FetchJsonError {
 	}
 }
 
-func FetchJson[OUTPUT_TYPE any](rawUrl string, options FetchOptions) (OUTPUT_TYPE, error) {
+func FetchJson[OUTPUT_TYPE any](rawUrl string, options FetchOptions) (OUTPUT_TYPE, *FetchJsonError) {
 	var output OUTPUT_TYPE
 	response, err := Fetch(rawUrl, options)
 	if err != nil {

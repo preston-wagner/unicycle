@@ -1,3 +1,3 @@
 module github.com/preston-wagner/unicycle
 
-go 1.18
+go 1.19
