@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -16,6 +17,19 @@ func (e *FetchJsonError) Error() string {
 	return e.Err.Error()
 }
 
+func (e *FetchJsonError) LogResponseBody() {
+	if e.Response == nil {
+		log.Println("LogResponseBody() error: no response")
+	} else {
+		responseBodyBytes, err := io.ReadAll(e.Response.Body)
+		if err != nil {
+			log.Printf("LogResponseBody() error: could not read body: %s", err.Error())
+			return
+		}
+		log.Println(string(responseBodyBytes))
+	}
+}
+
 func NewFetchJsonError(err error, response *http.Response) *FetchJsonError {
 	return &FetchJsonError{
 		Err:      err,
@@ -23,20 +37,20 @@ func NewFetchJsonError(err error, response *http.Response) *FetchJsonError {
 	}
 }
 
-func FetchJson[OUTPUT_TYPE any](raw_url string, options FetchOptions) (OUTPUT_TYPE, error) {
+func FetchJson[OUTPUT_TYPE any](rawUrl string, options FetchOptions) (OUTPUT_TYPE, error) {
 	var output OUTPUT_TYPE
-	response, err := Fetch(raw_url, options)
+	response, err := Fetch(rawUrl, options)
 	if err != nil {
 		return output, NewFetchJsonError(err, response)
 	}
 	if (response.StatusCode < 200) || (300 <= response.StatusCode) {
 		return output, NewFetchJsonError(fmt.Errorf("non-2XX response status code: %d", response.StatusCode), response)
 	}
-	response_body_bytes, err := io.ReadAll(response.Body)
+	responseBodyBytes, err := io.ReadAll(response.Body)
 	if err != nil {
 		return output, NewFetchJsonError(err, response)
 	}
-	err = json.Unmarshal(response_body_bytes, &output)
+	err = json.Unmarshal(responseBodyBytes, &output)
 	if err != nil {
 		return output, NewFetchJsonError(err, response)
 	}
