@@ -25,12 +25,13 @@ func (e *FetchJsonError) LogResponseBody() {
 	if e.Response == nil {
 		log.Println("LogResponseBody() error: no response")
 	} else {
+		log.Println(e.Response.Request.URL)
 		responseBodyBytes, err := io.ReadAll(e.Response.Body)
 		if err != nil {
 			log.Printf("LogResponseBody() error: could not read body: %s", err.Error())
-			return
+		} else {
+			log.Println(string(responseBodyBytes))
 		}
-		log.Println(string(responseBodyBytes))
 	}
 }
 
