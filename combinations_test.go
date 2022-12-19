@@ -19,4 +19,10 @@ func TestCombinations(t *testing.T) {
 	}) {
 		t.Errorf("Concatenate() returned unexpected %s", result)
 	}
+	result = Combinations([]string{})
+	if !reflect.DeepEqual(result, [][]string{
+		{},
+	}) {
+		t.Errorf("Concatenate() returned unexpected %s", result)
+	}
 }
