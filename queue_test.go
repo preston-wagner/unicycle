@@ -12,7 +12,7 @@ func assertQueueLength(t *testing.T, queue Queue[string], length int) {
 }
 
 func TestQueue(t *testing.T) {
-	var queue Queue[string]
+	queue := NewQueue[string]()
 	assertQueueLength(t, queue, 0)
 	queue.Push("hello")
 	queue.Push("world")

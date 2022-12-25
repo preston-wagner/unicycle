@@ -64,33 +64,28 @@ type Queue[VALUE_TYPE any] struct {
 	inner *innerQueue[VALUE_TYPE]
 }
 
-func (queue *Queue[VALUE_TYPE]) Init() {
-	if queue.inner == nil {
-		queue.inner = &innerQueue[VALUE_TYPE]{}
+func NewQueue[VALUE_TYPE any]() Queue[VALUE_TYPE] {
+	return Queue[VALUE_TYPE]{
+		inner: &innerQueue[VALUE_TYPE]{},
 	}
 }
 
 func (queue *Queue[VALUE_TYPE]) Push(value VALUE_TYPE) int {
-	queue.Init()
 	return queue.inner.push(value)
 }
 
 func (queue *Queue[VALUE_TYPE]) More() bool {
-	queue.Init()
 	return queue.inner.more()
 }
 
 func (queue *Queue[VALUE_TYPE]) Len() int {
-	queue.Init()
 	return queue.inner.len()
 }
 
 func (queue *Queue[VALUE_TYPE]) Pop() VALUE_TYPE {
-	queue.Init()
 	return queue.inner.pop()
 }
 
 func (queue *Queue[VALUE_TYPE]) PopAll() []VALUE_TYPE {
-	queue.Init()
 	return queue.inner.popAll()
 }
