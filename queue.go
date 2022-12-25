@@ -12,7 +12,7 @@ type innerQueue[VALUE_TYPE any] struct {
 	length int
 }
 
-func (queue *innerQueue[VALUE_TYPE]) Push(value VALUE_TYPE) int {
+func (queue *innerQueue[VALUE_TYPE]) push(value VALUE_TYPE) int {
 	node := &element[VALUE_TYPE]{
 		value: value,
 	}
@@ -27,15 +27,15 @@ func (queue *innerQueue[VALUE_TYPE]) Push(value VALUE_TYPE) int {
 	return queue.length
 }
 
-func (queue *innerQueue[VALUE_TYPE]) More() bool {
+func (queue *innerQueue[VALUE_TYPE]) more() bool {
 	return queue.first != nil
 }
 
-func (queue *innerQueue[VALUE_TYPE]) Len() int {
+func (queue *innerQueue[VALUE_TYPE]) len() int {
 	return queue.length
 }
 
-func (queue *innerQueue[VALUE_TYPE]) Pop() VALUE_TYPE {
+func (queue *innerQueue[VALUE_TYPE]) pop() VALUE_TYPE {
 	if queue.first == nil {
 		panic("runtime error: Pop() called on queue with length 0. Make sure to call queue.More() while iterating.")
 	} else {
@@ -49,11 +49,11 @@ func (queue *innerQueue[VALUE_TYPE]) Pop() VALUE_TYPE {
 	}
 }
 
-func (queue *innerQueue[VALUE_TYPE]) PopAll() []VALUE_TYPE {
+func (queue *innerQueue[VALUE_TYPE]) popAll() []VALUE_TYPE {
 	output := make([]VALUE_TYPE, queue.length)
 	index := 0
-	for queue.More() {
-		output[index] = queue.Pop()
+	for queue.more() {
+		output[index] = queue.pop()
 		index++
 	}
 	return output
@@ -72,25 +72,25 @@ func (queue *Queue[VALUE_TYPE]) Init() {
 
 func (queue *Queue[VALUE_TYPE]) Push(value VALUE_TYPE) int {
 	queue.Init()
-	return queue.inner.Push(value)
+	return queue.inner.push(value)
 }
 
 func (queue *Queue[VALUE_TYPE]) More() bool {
 	queue.Init()
-	return queue.inner.More()
+	return queue.inner.more()
 }
 
 func (queue *Queue[VALUE_TYPE]) Len() int {
 	queue.Init()
-	return queue.inner.Len()
+	return queue.inner.len()
 }
 
 func (queue *Queue[VALUE_TYPE]) Pop() VALUE_TYPE {
 	queue.Init()
-	return queue.inner.Pop()
+	return queue.inner.pop()
 }
 
 func (queue *Queue[VALUE_TYPE]) PopAll() []VALUE_TYPE {
 	queue.Init()
-	return queue.inner.PopAll()
+	return queue.inner.popAll()
 }
