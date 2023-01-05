@@ -42,7 +42,7 @@ func NewFetchJsonError(err error, response *http.Response) *FetchJsonError {
 	}
 }
 
-func FetchJson[OUTPUT_TYPE any](rawUrl string, options FetchOptions) (OUTPUT_TYPE, *FetchJsonError) {
+func FetchJson[OUTPUT_TYPE any](rawUrl string, options FetchOptions) (OUTPUT_TYPE, error) {
 	var output OUTPUT_TYPE
 	response, err := Fetch(rawUrl, options)
 	if err != nil {
