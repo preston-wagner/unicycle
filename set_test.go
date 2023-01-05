@@ -19,6 +19,7 @@ func TestSet(t *testing.T) {
 	if len(set) != 1 {
 		t.Errorf("Error removing values from Set")
 	}
+	set.Remove("lorem")
 	if len(set.Values()) != 1 {
 		t.Errorf("Error getting list of values from Set")
 	}
