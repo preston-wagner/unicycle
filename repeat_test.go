@@ -1,7 +1,6 @@
 package unicycle
 
 import (
-	"log"
 	"testing"
 	"time"
 )
