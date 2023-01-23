@@ -14,6 +14,7 @@ type FetchOptions struct {
 	Body    io.Reader
 }
 
+// Fetch simplifies common http requests and associated error checking
 func Fetch(raw_url string, options FetchOptions) (*http.Response, error) {
 	true_url, err := url.Parse(raw_url)
 	if err != nil {
