@@ -12,6 +12,7 @@ type FetchOptions struct {
 	Query   map[string]string
 	Headers map[string]string
 	Body    io.Reader
+	Timeout *time.Duration
 }
 
 // Fetch simplifies common http requests and associated error checking
@@ -37,8 +38,12 @@ func Fetch(raw_url string, options FetchOptions) (*http.Response, error) {
 	for key, value := range options.Headers {
 		request.Header.Add(key, value)
 	}
+	timeout := time.Minute
+	if options.Timeout != nil {
+		timeout = *options.Timeout
+	}
 	client := http.Client{
-		Timeout: time.Minute,
+		Timeout: timeout,
 	}
 	return client.Do(request)
 }
