@@ -2,6 +2,7 @@ package unicycle
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -30,23 +31,37 @@ func (e *FetchError) Unwrap() error {
 	return e.Err
 }
 
-func (e *FetchError) LogDetails() {
-	if e.Response == nil {
-		log.Println("FetchError.LogDetails() error: no Response")
+func LogResponseDetails(response *http.Response) {
+	if response == nil {
+		log.Println("LogResponseDetails() error: response is nil")
 	} else {
-		if e.Response.Request == nil {
-			log.Println("FetchError.LogDetails() error: e.Response.Request is nil")
+		if response.Request == nil {
+			log.Println("LogResponseDetails() error: response.Request is nil")
 		} else {
-			log.Println(e.Response.Request.URL)
+			if response.Request.URL == nil {
+				log.Println("LogResponseDetails() error: response.Request.URL is nil")
+			} else {
+				log.Println(response.Request.URL)
+			}
 		}
-		log.Println(e.Response.StatusCode)
-		log.Println(e.Response.Status)
-		responseBodyBytes, err := io.ReadAll(e.Response.Body)
+		log.Println(response.Status)
+		responseBodyBytes, err := io.ReadAll(response.Body)
 		if err != nil {
-			log.Println("FetchError.LogDetails() error: could not read body:", err)
+			log.Println("LogResponseDetails() error: could not read body:", err)
 		} else {
 			log.Println(string(responseBodyBytes))
 		}
+	}
+}
+
+func ResponseOk(response *http.Response) (bool, error) {
+	if response == nil {
+		return false, errors.New("response is nil")
+	} else {
+		if (response.StatusCode < 200) || (300 <= response.StatusCode) {
+			return false, newFetchError(fmt.Errorf("non-2XX response status code: %d", response.StatusCode), response)
+		}
+		return true, nil
 	}
 }
 
@@ -61,7 +76,7 @@ func LogPossibleFetchError(err error) bool {
 	log.Println(err)
 	var fetchError *FetchError
 	if errors.As(err, &fetchError) {
-		fetchError.LogDetails()
+		LogResponseDetails(fetchError.Response)
 		return true
 	}
 	return false
