@@ -2,7 +2,6 @@ package unicycle
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 )
 
@@ -14,8 +13,9 @@ func FetchJson[OUTPUT_TYPE any](rawUrl string, options FetchOptions) (OUTPUT_TYP
 		return output, err
 	}
 
-	if (response.StatusCode < 200) || (300 <= response.StatusCode) {
-		return output, newFetchError(fmt.Errorf("non-2XX response status code in FetchJson: %d", response.StatusCode), response)
+	ok, err := ResponseOk(response)
+	if !ok {
+		return output, err
 	}
 
 	responseBodyBytes, err := io.ReadAll(response.Body)

@@ -23,8 +23,9 @@ func FetchFile(raw_url string, options FetchOptions, directory, filename string)
 		return "", err
 	}
 
-	if (response.StatusCode < 200) || (300 <= response.StatusCode) {
-		return "", newFetchError(fmt.Errorf("non-2XX response status code in FetchFile: %d", response.StatusCode), response)
+	ok, err := ResponseOk(response)
+	if !ok {
+		return "", err
 	}
 
 	filenameParts := strings.Split(filename, ".")
