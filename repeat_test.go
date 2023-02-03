@@ -5,8 +5,8 @@ import (
 	"time"
 )
 
-const loopTimes = 5
-const duration = time.Second
+const loopTimes = 4
+const duration = time.Second / 4
 
 func TestRepeat(t *testing.T) {
 	callCount := 0
@@ -16,6 +16,7 @@ func TestRepeat(t *testing.T) {
 	kill := Repeat(increment, time.Duration(float64(duration)/loopTimes))
 	time.Sleep(duration)
 	kill()
+	time.Sleep(duration)
 	if callCount != loopTimes {
 		t.Errorf("Repeat was not called the expected number of times (%v != %v)", loopTimes, callCount)
 	}
