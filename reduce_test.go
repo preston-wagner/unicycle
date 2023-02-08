@@ -13,4 +13,8 @@ func TestReduce(t *testing.T) {
 	if result != 45 {
 		t.Errorf("Reduce() returned unexpected %d", result)
 	}
+
+	if Reduce(nil, sum, 7) != 7 {
+		t.Error("Reduce(nil, reducer, initial) should return the initial value")
+	}
 }

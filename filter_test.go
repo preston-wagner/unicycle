@@ -14,4 +14,8 @@ func TestFilter(t *testing.T) {
 	if !reflect.DeepEqual(result, []int{1, 3, 5, 7, 9}) {
 		t.Errorf("Filter() returned unexpected %d", result)
 	}
+
+	if len(Filter(nil, odd)) != 0 {
+		t.Error("Filter(nil) should return a slice with length 0")
+	}
 }
