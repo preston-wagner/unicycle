@@ -40,3 +40,19 @@ func TestPromise(t *testing.T) {
 		t.Errorf("re-resolution with new value did not work as expected")
 	}
 }
+
+func TestWrapInPromise(t *testing.T) {
+	prm := WrapInPromise(func() (string, error) {
+		time.Sleep(duration)
+		return "done", nil
+	})
+
+	result, err := prm.Await()
+	if err != nil {
+		t.Errorf("no error should be returned when resolved without one")
+	}
+
+	if result != "done" {
+		t.Errorf("wrong result returned")
+	}
+}
