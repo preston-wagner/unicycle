@@ -33,3 +33,20 @@ func TestFetchBadDomain(t *testing.T) {
 		t.Error("Fetch should not return a response if the domain doesn't exist")
 	}
 }
+
+func TestAppendQueryParams(t *testing.T) {
+	base := "https://www.google.com/search?q=lorem"
+	appended, err := AppendQueryParams(base, map[string]string{
+		"ie": "UTF-8",
+	})
+	if err != nil {
+		t.Error("AppendQueryParams should not return an error if the base url was fine")
+	}
+	okResults := []string{
+		"https://www.google.com/search?q=lorem&ie=UTF-8",
+		"https://www.google.com/search?ie=UTF-8&q=lorem",
+	}
+	if !Includes(okResults, appended) {
+		t.Errorf("AppendQueryParams failed: %v", appended)
+	}
+}

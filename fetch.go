@@ -82,26 +82,35 @@ func LogPossibleFetchError(err error) bool {
 	return false
 }
 
-// Fetch simplifies common http requests and associated error checking
-func Fetch(raw_url string, options FetchOptions) (*http.Response, error) {
-	true_url, err := url.Parse(raw_url)
+func AppendQueryParams(rawUrl string, queryParams map[string]string) (string, error) {
+	trueUrl, err := url.Parse(rawUrl)
 	if err != nil {
-		return nil, err
+		return rawUrl, err
 	}
 
-	if len(options.Query) > 0 {
-		query := true_url.Query()
-		for key, value := range options.Query {
+	if len(queryParams) > 0 {
+		query := trueUrl.Query()
+		for key, value := range queryParams {
 			query.Set(key, value)
 		}
-		true_url.RawQuery = query.Encode()
+		trueUrl.RawQuery = query.Encode()
+	}
+
+	return trueUrl.String(), nil
+}
+
+// Fetch simplifies common http requests and associated error checking
+func Fetch(rawUrl string, options FetchOptions) (*http.Response, error) {
+	trueUrl, err := AppendQueryParams(rawUrl, options.Query)
+	if err != nil {
+		return nil, err
 	}
 
 	if options.Method == "" {
 		options.Method = "GET"
 	}
 
-	request, err := http.NewRequest(options.Method, true_url.String(), options.Body)
+	request, err := http.NewRequest(options.Method, trueUrl, options.Body)
 	if err != nil {
 		return nil, err
 	}
