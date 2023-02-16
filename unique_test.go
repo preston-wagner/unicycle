@@ -10,4 +10,8 @@ func TestUnique(t *testing.T) {
 	if !reflect.DeepEqual(result, []int{1, 2, 3, 4, 5}) {
 		t.Errorf("Unique() returned unexpected %d", result)
 	}
+
+	if !reflect.DeepEqual(Unique[int](nil), []int{}) {
+		t.Error("Unique(nil) should return a slice")
+	}
 }
