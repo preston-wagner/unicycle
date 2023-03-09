@@ -4,21 +4,21 @@ import (
 	"sync"
 )
 
-type promissory[VALUE_TYPE any] struct {
+type Promissory[VALUE_TYPE any] struct {
 	Value VALUE_TYPE
 	Err   error
 }
 
 // a Promise represents data that is not yet available, but will be provided (most likely by a different goroutine) in the future
 type Promise[VALUE_TYPE any] struct {
-	awaiters []chan promissory[VALUE_TYPE]
-	result   *promissory[VALUE_TYPE]
+	awaiters []chan Promissory[VALUE_TYPE]
+	result   *Promissory[VALUE_TYPE]
 	lock     *sync.RWMutex
 }
 
 func NewPromise[VALUE_TYPE any]() *Promise[VALUE_TYPE] {
 	return &Promise[VALUE_TYPE]{
-		awaiters: []chan promissory[VALUE_TYPE]{},
+		awaiters: []chan Promissory[VALUE_TYPE]{},
 		lock:     &sync.RWMutex{},
 	}
 }
@@ -32,7 +32,7 @@ func WrapInPromise[VALUE_TYPE any](wrapped func() (VALUE_TYPE, error)) *Promise[
 }
 
 func (promise *Promise[VALUE_TYPE]) Await() (VALUE_TYPE, error) {
-	c := make(chan promissory[VALUE_TYPE])
+	c := make(chan Promissory[VALUE_TYPE])
 	promise.lock.Lock()
 	if promise.result != nil {
 		defer promise.lock.Unlock()
@@ -44,12 +44,12 @@ func (promise *Promise[VALUE_TYPE]) Await() (VALUE_TYPE, error) {
 	return result.Value, result.Err
 }
 
-func resolveChannel[VALUE_TYPE any](awaiter chan promissory[VALUE_TYPE], prm promissory[VALUE_TYPE]) {
+func resolveChannel[VALUE_TYPE any](awaiter chan Promissory[VALUE_TYPE], prm Promissory[VALUE_TYPE]) {
 	awaiter <- prm
 }
 
 func (promise *Promise[VALUE_TYPE]) Resolve(value VALUE_TYPE, err error) {
-	prm := promissory[VALUE_TYPE]{
+	prm := Promissory[VALUE_TYPE]{
 		Value: value,
 		Err:   err,
 	}
@@ -58,14 +58,14 @@ func (promise *Promise[VALUE_TYPE]) Resolve(value VALUE_TYPE, err error) {
 	for _, awaiter := range promise.awaiters {
 		go resolveChannel(awaiter, prm)
 	}
-	promise.awaiters = []chan promissory[VALUE_TYPE]{} // empty the slice
+	promise.awaiters = []chan Promissory[VALUE_TYPE]{} // empty the slice
 	promise.lock.Unlock()
 }
 
-func AwaitAll[VALUE_TYPE any](promises ...*Promise[VALUE_TYPE]) []promissory[VALUE_TYPE] {
-	return Mapping(promises, func(promise *Promise[VALUE_TYPE]) promissory[VALUE_TYPE] {
+func AwaitAll[VALUE_TYPE any](promises ...*Promise[VALUE_TYPE]) []Promissory[VALUE_TYPE] {
+	return Mapping(promises, func(promise *Promise[VALUE_TYPE]) Promissory[VALUE_TYPE] {
 		value, err := promise.Await()
-		return promissory[VALUE_TYPE]{
+		return Promissory[VALUE_TYPE]{
 			Value: value,
 			Err:   err,
 		}
