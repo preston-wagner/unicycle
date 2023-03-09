@@ -63,7 +63,7 @@ func TestAwaitAll(t *testing.T) {
 		WrapInPromise(func() (int, error) { time.Sleep(duration * 3); return 1, nil }),
 		WrapInPromise(func() (int, error) { time.Sleep(duration * 2); return 2, nil }),
 		WrapInPromise(func() (int, error) { time.Sleep(duration * 1); return 3, nil }),
-	), func(prm promissory[int]) int {
+	), func(prm Promissory[int]) int {
 		return prm.Value
 	})
 	if !reflect.DeepEqual(result, []int{1, 2, 3}) {
