@@ -1,6 +1,7 @@
 package unicycle
 
 import (
+	"reflect"
 	"testing"
 	"time"
 )
@@ -54,5 +55,22 @@ func TestWrapInPromise(t *testing.T) {
 
 	if result != "done" {
 		t.Errorf("wrong result returned")
+	}
+}
+
+func TestAwaitAll(t *testing.T) {
+	result := Mapping(AwaitAll(
+		WrapInPromise(func() (int, error) { time.Sleep(duration * 3); return 1, nil }),
+		WrapInPromise(func() (int, error) { time.Sleep(duration * 2); return 2, nil }),
+		WrapInPromise(func() (int, error) { time.Sleep(duration * 1); return 3, nil }),
+	), func(prm promissory[int]) int {
+		return prm.Value
+	})
+	if !reflect.DeepEqual(result, []int{1, 2, 3}) {
+		t.Errorf("AwaitAll() returned unexpected %v", result)
+	}
+
+	if len(AwaitAll[int]()) != 0 {
+		t.Error("AwaitAll() with no args should return a slice with length 0")
 	}
 }
