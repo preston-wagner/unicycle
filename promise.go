@@ -61,3 +61,13 @@ func (promise *Promise[VALUE_TYPE]) Resolve(value VALUE_TYPE, err error) {
 	promise.awaiters = []chan promissory[VALUE_TYPE]{} // empty the slice
 	promise.lock.Unlock()
 }
+
+func AwaitAll[VALUE_TYPE any](promises ...*Promise[VALUE_TYPE]) []promissory[VALUE_TYPE] {
+	return Mapping(promises, func(promise *Promise[VALUE_TYPE]) promissory[VALUE_TYPE] {
+		value, err := promise.Await()
+		return promissory[VALUE_TYPE]{
+			Value: value,
+			Err:   err,
+		}
+	})
+}
