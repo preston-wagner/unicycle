@@ -5,7 +5,7 @@ import (
 	"io"
 )
 
-// FetchJson simplifies the common task of fetching some JSON data and returning it as a struct
+// FetchJson simplifies the common task of making a HTTP request to fetch some JSON data and returning it as a struct
 func FetchJson[OUTPUT_TYPE any](rawUrl string, options FetchOptions) (OUTPUT_TYPE, error) {
 	var output OUTPUT_TYPE
 	response, err := Fetch(rawUrl, options)
