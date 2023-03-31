@@ -7,7 +7,7 @@ import (
 
 // ErrorAs simplifies checking the types of errors, specifically in if statements:
 //
-//	if custErr := ErrorAs[CustomErrorType](err); err != nil {
+//	if custErr := ErrorAs[CustomErrorType](err); custErr != nil {
 //		 // use custErr
 //	}
 //
