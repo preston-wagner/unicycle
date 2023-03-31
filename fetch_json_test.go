@@ -36,10 +36,12 @@ func TestFetchJsonWithoutJson(t *testing.T) {
 	if err == nil {
 		t.Error("Non-json response did not return error")
 	}
-	// if !LogPossibleFetchError(err) {
-	var fetchError *FetchError
+	if fetchError := ErrorAs[FetchError](err); fetchError == nil {
+		t.Error("FetchJson should have responded with an instance of FetchError (according to ErrorAs)")
+	}
+	var fetchError FetchError
 	if !errors.As(err, &fetchError) {
-		t.Error("FetchJson should have responded with an instance of FetchError, got", err)
+		t.Error("FetchJson should have responded with an instance of FetchError (according to errors.As)")
 	}
 }
 
@@ -48,9 +50,11 @@ func TestFetchJsonWith404(t *testing.T) {
 	if err == nil {
 		t.Error("404 response did not return error")
 	}
-	// if !LogPossibleFetchError(err) {
-	var fetchError *FetchError
+	if fetchError := ErrorAs[FetchError](err); fetchError == nil {
+		t.Error("FetchJson should have responded with an instance of FetchError (according to ErrorAs)")
+	}
+	var fetchError FetchError
 	if !errors.As(err, &fetchError) {
-		t.Error("FetchJson should have responded with an instance of FetchError, got", err)
+		t.Error("FetchJson should have responded with an instance of FetchError (according to errors.As)")
 	}
 }
