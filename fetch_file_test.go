@@ -40,10 +40,12 @@ func TestFetchFileWith404(t *testing.T) {
 	if err == nil {
 		t.Error("404 response did not return error")
 	}
-	// if !LogPossibleFetchError(err) {
-	var fetchError *FetchError
+	if fetchError := ErrorAs[FetchError](err); fetchError == nil {
+		t.Error("FetchFile should have responded with an instance of FetchError")
+	}
+	var fetchError FetchError
 	if !errors.As(err, &fetchError) {
-		t.Error("FetchFile should have responded with an instance of FetchError, got", err)
+		t.Error("FetchFile should have responded with an instance of FetchError (according to errors.As)")
 	}
 	testTempFolderIsEmpty(t)
 }
