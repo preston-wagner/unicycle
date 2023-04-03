@@ -5,15 +5,6 @@ import (
 	"testing"
 )
 
-func sliceToChannel[INPUT_TYPE any](input []INPUT_TYPE) chan INPUT_TYPE {
-	output := make(chan INPUT_TYPE, cap(input))
-	for _, value := range input {
-		output <- value
-	}
-	close(output)
-	return output
-}
-
 func channelToSlice[INPUT_TYPE any](input chan INPUT_TYPE) []INPUT_TYPE {
 	output := make([]INPUT_TYPE, 0)
 	for value := range input {
