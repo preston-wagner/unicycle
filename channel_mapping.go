@@ -20,3 +20,49 @@ func ChannelMappingFallible[INPUT_TYPE any, OUTPUT_TYPE any](input chan INPUT_TY
 		return Promissory[OUTPUT_TYPE]{Value: result, Err: err}
 	})
 }
+
+// accepts a single input channel and returns a given number of unbuffered child channels that all pull from it
+// the child channels close when the parent channel does
+func splitChannel[T any](input chan T, splitCount int) []chan T {
+	if splitCount < 1 {
+		panic("splitChannel argument splitCount must be > 0")
+	}
+	output := []chan T{}
+	for i := 0; i < splitCount; i++ {
+		outChan := make(chan T)
+		go func() {
+			for value := range input {
+				outChan <- value
+			}
+			close(outChan)
+		}()
+		output = append(output, outChan)
+	}
+	return output
+}
+
+// accepts any number of channels of the same type and returns a single unbuffered channel that pulls from all all of them
+// the returned channel closes once all the source channels do
+func mergeChannels[T any](input []chan T) chan T {
+	output := make(chan T)
+	go func() {
+		AwaitAll(Mapping(input, func(inputChan chan T) *Promise[bool] {
+			return WrapInPromise(func() (bool, error) {
+				for value := range inputChan {
+					output <- value
+				}
+				return true, nil
+			})
+		})...)
+		close(output)
+	}()
+	return output
+}
+
+// Like ChannelMapping, but runs mutators concurrently up to a given limit
+// WARNING: unlike ChannelMapping, order is not necessarily preserved
+func ChannelMappingMultithread[INPUT_TYPE any, OUTPUT_TYPE any](input chan INPUT_TYPE, mutator func(INPUT_TYPE) OUTPUT_TYPE, threadCount int) chan OUTPUT_TYPE {
+	return mergeChannels(Mapping(splitChannel(input, threadCount), func(inputChan chan INPUT_TYPE) chan OUTPUT_TYPE {
+		return ChannelMapping(inputChan, mutator)
+	}))
+}
