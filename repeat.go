@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// Repeat runs a given function in its own goroutine once per given duration, and returns a function that can be called to cancel the task
+// Repeat runs a given function once per given duration, and returns a function that can be called to cancel the task
 func Repeat(wrapped func(), interval time.Duration) func() {
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
@@ -14,11 +14,18 @@ func Repeat(wrapped func(), interval time.Duration) func() {
 		for {
 			select {
 			case <-ticker.C:
-				go wrapped()
+				wrapped()
 			case <-ctx.Done():
 				return
 			}
 		}
 	}()
 	return cancel
+}
+
+// Like Repeat, but each call runs in its own goroutine
+func RepeatMultithread(wrapped func(), interval time.Duration) func() {
+	return Repeat(func() {
+		go wrapped()
+	}, interval)
 }
