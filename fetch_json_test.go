@@ -58,3 +58,22 @@ func TestFetchJsonWith404(t *testing.T) {
 		t.Error("FetchJson should have responded with an instance of FetchError (according to errors.As)")
 	}
 }
+
+func TestFetchJsonAlwaysWith400(t *testing.T) {
+	type fbErrorResponse struct {
+		Error struct {
+			Code int
+		}
+	}
+	response, err := FetchJsonAlways[fbErrorResponse]("https://graph.facebook.com/v9.0/me", FetchOptions{
+		Query: map[string]string{
+			"access_token": "fakeTokenForUnitTest",
+		},
+	})
+	if err != nil {
+		t.Error(err)
+	}
+	if response.Error.Code != 190 {
+		t.Error("FetchJsonAlways https://graph.facebook.com/v8.0/me response.Error.Code != 190")
+	}
+}
