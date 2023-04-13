@@ -66,6 +66,9 @@ func ResponseOk(response *http.Response) (bool, error) {
 }
 
 func newFetchError(err error, response *http.Response) error {
+	if err == nil {
+		return nil
+	}
 	return FetchError{
 		Err:      err,
 		Response: response,
