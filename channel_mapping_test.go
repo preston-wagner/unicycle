@@ -5,32 +5,24 @@ import (
 	"testing"
 )
 
-func channelToSlice[INPUT_TYPE any](input chan INPUT_TYPE) []INPUT_TYPE {
-	output := make([]INPUT_TYPE, 0)
-	for value := range input {
-		output = append(output, value)
-	}
-	return Trim(output)
-}
-
 func TestChannelMapping(t *testing.T) {
-	result := channelToSlice(ChannelMapping(sliceToChannel([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}), toString))
+	result := ChannelToSlice(ChannelMapping(SliceToChannel([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}), toString))
 	if !reflect.DeepEqual(result, []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}) {
 		t.Errorf("ChannelMapping() returned unexpected %s", result)
 	}
 
-	if len(channelToSlice(ChannelMapping(sliceToChannel([]int{}), toString))) != 0 {
+	if len(ChannelToSlice(ChannelMapping(SliceToChannel([]int{}), toString))) != 0 {
 		t.Error("ChannelMapping with a closed channel should return a closed channel")
 	}
 }
 
 func TestChannelMappingMultithread(t *testing.T) {
-	result := channelToSlice(ChannelMappingMultithread(sliceToChannel([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}), toString, 10))
+	result := ChannelToSlice(ChannelMappingMultithread(SliceToChannel([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}), toString, 10))
 	if !reflect.DeepEqual(SetFromSlice(result), SetFromSlice([]string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"})) { // testing equality with sets since order of output is not preserved
 		t.Errorf("ChannelMapping() returned unexpected %s", result)
 	}
 
-	if len(channelToSlice(ChannelMappingMultithread(sliceToChannel([]int{}), toString, 10))) != 0 {
+	if len(ChannelToSlice(ChannelMappingMultithread(SliceToChannel([]int{}), toString, 10))) != 0 {
 		t.Error("ChannelMappingMultithread with a closed channel should return a closed channel")
 	}
 }

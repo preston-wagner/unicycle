@@ -14,5 +14,5 @@ func Every[T any](input []T, test func(T) bool) bool {
 
 // Like Every, but runs tests concurrently up to a given limit
 func EveryMultithread[T any](input []T, test func(T) bool, threadCount int) bool {
-	return ChannelEveryMultithread(sliceToChannel(input), test, threadCount)
+	return ChannelEveryMultithread(SliceToChannel(input), test, threadCount)
 }
