@@ -43,7 +43,7 @@ func splitChannel[T any](input chan T, splitCount int) []chan T {
 
 // accepts any number of channels of the same type and returns a single unbuffered channel that pulls from all all of them
 // the returned channel closes once all the source channels do
-func mergeChannels[T any](input []chan T) chan T {
+func mergeChannels[T any](input []chan T, capacity int) chan T {
 	output := make(chan T)
 	go func() {
 		AwaitAll(Mapping(input, func(inputChan chan T) *Promise[bool] {
@@ -64,5 +64,5 @@ func mergeChannels[T any](input []chan T) chan T {
 func ChannelMappingMultithread[INPUT_TYPE any, OUTPUT_TYPE any](input chan INPUT_TYPE, mutator func(INPUT_TYPE) OUTPUT_TYPE, threadCount int) chan OUTPUT_TYPE {
 	return mergeChannels(Mapping(splitChannel(input, threadCount), func(inputChan chan INPUT_TYPE) chan OUTPUT_TYPE {
 		return ChannelMapping(inputChan, mutator)
-	}))
+	}), cap(input))
 }
