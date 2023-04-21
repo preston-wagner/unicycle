@@ -41,10 +41,10 @@ func splitChannel[T any](input chan T, splitCount int) []chan T {
 	return output
 }
 
-// accepts any number of channels of the same type and returns a single unbuffered channel that pulls from all all of them
+// accepts any number of channels of the same type and returns a single channel that pulls from all of them at once
 // the returned channel closes once all the source channels do
 func mergeChannels[T any](input []chan T, capacity int) chan T {
-	output := make(chan T)
+	output := make(chan T, capacity)
 	go func() {
 		AwaitAll(Mapping(input, func(inputChan chan T) *Promise[bool] {
 			return WrapInPromise(func() (bool, error) {
