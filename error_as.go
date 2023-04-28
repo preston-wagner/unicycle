@@ -11,13 +11,22 @@ import (
 //		 // use custErr
 //	}
 //
-// it also handles edge cases missed by errors.As, such as pointers to the checked or intermediate types
+// it also handles edge cases missed by errors.As, such as pointers to the checked or intermediate types, or types that don't satisfy the error interface while pointers to the type do
+//
 // (non-nil pointers to structs that implement an interface also implement that interface as far as go is concerned in all other instances)
-func ErrorAs[ERROR_TYPE error](err error) *ERROR_TYPE {
+func ErrorAs[ERROR_TYPE any](err error) *ERROR_TYPE {
 	if err != nil {
-		var errInstance ERROR_TYPE
-		if errors.As(err, &errInstance) {
-			return &errInstance
+		if TypeSatisfiesInterface[ERROR_TYPE, error]() {
+			var anyInstance ERROR_TYPE
+			if errors.As(err, &anyInstance) {
+				return &anyInstance
+			}
+		}
+		if TypeSatisfiesInterface[*ERROR_TYPE, error]() {
+			ptr, ok := any(err).(*ERROR_TYPE)
+			if ok {
+				return ptr
+			}
 		}
 		if dereferencedErr := unsafeErrorAs[ERROR_TYPE](err); dereferencedErr != nil {
 			return dereferencedErr
@@ -29,7 +38,7 @@ func ErrorAs[ERROR_TYPE error](err error) *ERROR_TYPE {
 	return nil
 }
 
-func unsafeErrorAs[ERROR_TYPE error](err error) (returnedErr *ERROR_TYPE) {
+func unsafeErrorAs[ERROR_TYPE any](err error) (returnedErr *ERROR_TYPE) {
 	defer func() {
 		// you really never know when reflect is going to panic on you
 		if r := recover(); r != nil {

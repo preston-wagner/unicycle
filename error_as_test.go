@@ -5,15 +5,27 @@ import (
 	"testing"
 )
 
-type wrappingError struct {
+type WrappingError struct {
 	err error
 }
 
-func (e wrappingError) Error() string {
+func (e WrappingError) Error() string {
 	return e.err.Error()
 }
 
-func (e wrappingError) Unwrap() error {
+func (e WrappingError) Unwrap() error {
+	return e.err
+}
+
+type PtrError struct {
+	err error
+}
+
+func (e *PtrError) Error() string {
+	return e.err.Error()
+}
+
+func (e *PtrError) Unwrap() error {
 	return e.err
 }
 
@@ -35,28 +47,46 @@ func TestErrorAs(t *testing.T) {
 	if fetchErr := ErrorAs[FetchError](err); fetchErr == nil {
 		t.Error("ErrorAs should have returned an instance of FetchError when given a pointer to an instance of it")
 	}
-	err = wrappingError{err: FetchError{Err: errors.New("irrelevant")}}
+
+	err = WrappingError{err: FetchError{Err: errors.New("irrelevant")}}
 	if fetchErr := ErrorAs[FetchError](err); fetchErr == nil {
 		t.Error("ErrorAs should have returned an instance of FetchError when given a type that wraps it")
 	}
-	err = &wrappingError{err: FetchError{Err: errors.New("irrelevant")}}
+	err = &WrappingError{err: FetchError{Err: errors.New("irrelevant")}}
 	if fetchErr := ErrorAs[FetchError](err); fetchErr == nil {
 		t.Error("ErrorAs should have returned an instance of FetchError when given a pointer to a type that wraps it")
 	}
-	err = wrappingError{err: &FetchError{Err: errors.New("irrelevant")}}
+	err = WrappingError{err: &FetchError{Err: errors.New("irrelevant")}}
 	if fetchErr := ErrorAs[FetchError](err); fetchErr == nil {
 		t.Error("ErrorAs should have returned an instance of FetchError when given a type that wraps a pointer to it")
 	}
-	err = &wrappingError{err: &FetchError{Err: errors.New("irrelevant")}}
+	err = &WrappingError{err: &FetchError{Err: errors.New("irrelevant")}}
 	if fetchErr := ErrorAs[FetchError](err); fetchErr == nil {
 		t.Error("ErrorAs should have returned an instance of FetchError when given a pointer to a type that wraps a pointer to it")
 	}
-	err = wrappingError{err: errors.New("irrelevant")}
+	err = WrappingError{err: errors.New("irrelevant")}
 	if fetchErr := ErrorAs[FetchError](err); fetchErr != nil {
 		t.Error("ErrorAs should have returned nil when given a pointer to a type that does not wrap FetchError")
 	}
-	err = &wrappingError{err: errors.New("irrelevant")}
+	err = &WrappingError{err: errors.New("irrelevant")}
 	if fetchErr := ErrorAs[FetchError](err); fetchErr != nil {
 		t.Error("ErrorAs should have returned nil when given a pointer to a type that does not wrap FetchError")
+	}
+
+	err = &PtrError{err: errors.New("irrelevant")}
+	if ptrErr := ErrorAs[PtrError](err); ptrErr == nil {
+		t.Error("ErrorAs should not have returned nil when given a pointer to the expected type")
+	}
+	err = WrappingError{err: &PtrError{err: errors.New("irrelevant")}}
+	if ptrErr := ErrorAs[PtrError](err); ptrErr == nil {
+		t.Error("ErrorAs should have returned an instance of PtrError when given a type that wraps a pointer to it")
+	}
+	err = WrappingError{err: &PtrError{err: errors.New("irrelevant")}}
+	if ptrErr := ErrorAs[PtrError](err); ptrErr == nil {
+		t.Error("ErrorAs should have returned an instance of ptrError when given a type that wraps a pointer to it")
+	}
+	err = &WrappingError{err: &PtrError{err: errors.New("irrelevant")}}
+	if ptrErr := ErrorAs[PtrError](err); ptrErr == nil {
+		t.Error("ErrorAs should have returned an instance of ptrError when given a pointer to a type that wraps a pointer to it")
 	}
 }
