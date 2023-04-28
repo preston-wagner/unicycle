@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-type JsonPlaceholder struct {
+type jsonPlaceholder struct {
 	UserId    int    `json:"userId"`
 	ID        int    `json:"id"`
 	Title     string `json:"title"`
@@ -13,7 +13,7 @@ type JsonPlaceholder struct {
 }
 
 func TestFetchJson(t *testing.T) {
-	placeholder, err := FetchJson[JsonPlaceholder]("https://jsonplaceholder.typicode.com/todos/1", FetchOptions{})
+	placeholder, err := FetchJson[jsonPlaceholder]("https://jsonplaceholder.typicode.com/todos/1", FetchOptions{})
 	if err != nil {
 		t.Error("Error fetching test json")
 	}
@@ -32,7 +32,7 @@ func TestFetchJson(t *testing.T) {
 }
 
 func TestFetchJsonWithoutJson(t *testing.T) {
-	_, err := FetchJson[JsonPlaceholder]("https://jsonplaceholder.typicode.com/", FetchOptions{})
+	_, err := FetchJson[jsonPlaceholder]("https://jsonplaceholder.typicode.com/", FetchOptions{})
 	if err == nil {
 		t.Error("Non-json response did not return error")
 	}
@@ -46,7 +46,7 @@ func TestFetchJsonWithoutJson(t *testing.T) {
 }
 
 func TestFetchJsonWith404(t *testing.T) {
-	_, err := FetchJson[JsonPlaceholder]("https://www.google.com/badUrl", FetchOptions{})
+	_, err := FetchJson[jsonPlaceholder]("https://www.google.com/badUrl", FetchOptions{})
 	if err == nil {
 		t.Error("404 response did not return error")
 	}
