@@ -9,7 +9,7 @@ import (
 // if before == true, the wrapped function will be called immediately, instead of waiting for the ticker for the first run
 func Repeat(wrapped func(), interval time.Duration, before bool) func() {
 	ctx, cancel := context.WithCancel(context.Background())
-	go repeatInner(interval, ctx, wrapped, false)
+	go repeatInner(interval, ctx, wrapped, before)
 	return cancel
 }
 
