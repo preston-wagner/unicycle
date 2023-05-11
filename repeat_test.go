@@ -13,7 +13,7 @@ func TestRepeat(t *testing.T) {
 	increment := func() {
 		callCount++
 	}
-	kill := Repeat(increment, time.Duration(float64(duration)/loopTimes))
+	kill := Repeat(increment, time.Duration(float64(duration)/loopTimes), false)
 	time.Sleep(duration)
 	kill()
 	time.Sleep(duration)
