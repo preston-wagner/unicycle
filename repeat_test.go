@@ -28,3 +28,24 @@ func TestRepeat(t *testing.T) {
 		t.Errorf("Repeat was not called the expected number of times (%v != %v)", loopTimes, callCount)
 	}
 }
+
+func TestRepeatBefore(t *testing.T) {
+	callCount := 0
+	increment := func() {
+		callCount++
+	}
+	kill := Repeat(increment, time.Duration(float64(duration)/loopTimes), true)
+	time.Sleep(duration)
+	kill()
+	time.Sleep(duration)
+	if callCount != loopTimes+1 {
+		t.Errorf("Repeat was not called the expected number of times (%v != %v)", loopTimes+1, callCount)
+	}
+	time.Sleep(duration)
+	kill() // extra kills to make sure multiple calls don't block or cause errors
+	kill()
+	kill()
+	if callCount != loopTimes+1 {
+		t.Errorf("Repeat was not called the expected number of times (%v != %v)", loopTimes+1, callCount)
+	}
+}
