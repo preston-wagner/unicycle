@@ -14,6 +14,7 @@ func (reader errReader) Read(p []byte) (int, error) {
 	return 0, reader.err
 }
 
+// JsonToReader simplifies marshalling a struct to json for use in http requests (which accept io.Reader instead of []byte)
 func JsonToReader(input any) io.Reader {
 	data, err := json.Marshal(input)
 	if err != nil {
