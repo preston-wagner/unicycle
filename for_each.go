@@ -7,7 +7,7 @@ func ChannelForEach[INPUT_TYPE any](input chan INPUT_TYPE, worker func(INPUT_TYP
 	}
 }
 
-// like ChannelForEach, but runs on
+// like ChannelForEach, but runs concurrently up to a given limit
 func ChannelForEachMultithread[INPUT_TYPE any](input chan INPUT_TYPE, worker func(INPUT_TYPE), threadCount int) {
 	// TODO: create an alternate version of Promise for functions that will never return errors
 	AwaitAll(Mapping(splitChannel(input, threadCount), func(inputChan chan INPUT_TYPE) *Promise[bool] {
