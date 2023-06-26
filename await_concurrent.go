@@ -12,7 +12,7 @@ func AwaitConcurrent(funcs ...func()) {
 	for _, wrapped := range funcs {
 		go awaitSafe(pending, wrapped)
 	}
-	for _ = range pending {
+	for range pending {
 		finished++
 		if finished == len(funcs) {
 			return
