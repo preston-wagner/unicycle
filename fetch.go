@@ -1,8 +1,6 @@
 package unicycle
 
 import (
-	"errors"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -16,19 +14,6 @@ type FetchOptions struct {
 	Headers map[string]string
 	Body    io.Reader
 	Timeout *time.Duration
-}
-
-type FetchError struct {
-	Response *http.Response
-	Err      error
-}
-
-func (e FetchError) Error() string {
-	return e.Err.Error()
-}
-
-func (e FetchError) Unwrap() error {
-	return e.Err
 }
 
 func LogResponseDetails(response *http.Response) {
@@ -56,10 +41,10 @@ func LogResponseDetails(response *http.Response) {
 
 func ResponseOk(response *http.Response) (bool, error) {
 	if response == nil {
-		return false, errors.New("response is nil")
+		return false, errFetchNilResponse
 	} else {
 		if (response.StatusCode < 200) || (300 <= response.StatusCode) {
-			return false, newFetchError(fmt.Errorf("non-2XX response status code: %d", response.StatusCode), response)
+			return false, newFetchError(BadResponseError{StatusCode: response.StatusCode}, response)
 		}
 		return true, nil
 	}

@@ -1,7 +1,6 @@
 package unicycle
 
 import (
-	"errors"
 	"fmt"
 	"mime"
 	"os"
@@ -12,10 +11,10 @@ import (
 // if filename does not contain an extension, an attempt will be made to infer it from the request's Content-Type header
 func FetchFile(raw_url string, options FetchOptions, directory, filename string) (string, error) {
 	if directory == "" {
-		return "", errors.New("FetchFile requires a directory")
+		return "", errFetchFileNoDirectory
 	}
 	if filename == "" {
-		return "", errors.New("FetchFile requires a filename")
+		return "", errFetchFileNoFilename
 	}
 
 	response, err := Fetch(raw_url, options)
