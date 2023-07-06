@@ -16,8 +16,11 @@ func testTempFolderIsEmpty(t *testing.T) {
 	}
 }
 
+const tempFolderPath = "temp"
+
 func TestFetchFile(t *testing.T) {
-	filepath, err := FetchFile("https://www.iana.org/_img/2022/iana-logo-header.svg", FetchOptions{}, "temp", "temp")
+	os.Mkdir(tempFolderPath, os.ModePerm) // ignore error if folder already exists
+	filepath, err := FetchFile("https://www.iana.org/_img/2022/iana-logo-header.svg", FetchOptions{}, tempFolderPath, "temp")
 	if err != nil {
 		t.Error("Error fetching test file", err)
 	}
@@ -33,7 +36,8 @@ func TestFetchFile(t *testing.T) {
 }
 
 func TestFetchFileWith404(t *testing.T) {
-	filepath, err := FetchFile("https://www.google.com/badUrl", FetchOptions{}, "temp", "temp")
+	os.Mkdir(tempFolderPath, os.ModePerm) // ignore error if folder already exists
+	filepath, err := FetchFile("https://www.google.com/badUrl", FetchOptions{}, tempFolderPath, "temp")
 	if filepath != "" {
 		t.Error("404 response did not return empty string")
 	}
