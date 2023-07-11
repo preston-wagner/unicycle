@@ -38,16 +38,18 @@ func AwaitConcurrentWithErrors(funcs ...func() error) error {
 	for _, wrapped := range funcs {
 		go awaitUnsafe(pending, wrapped)
 	}
+
+	errs := []error{}
 	for err := range pending {
 		if err != nil {
-			return err
+			errs = append(errs, err)
 		}
 		finished++
 		if finished == len(funcs) {
-			return nil
+			break
 		}
 	}
-	panic("pending channel closed!") // this should never actually happen but the line is required to compile
+	return errors.Join(errs...)
 }
 
 func awaitUnsafe(pending chan error, wrapped func() error) {

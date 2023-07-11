@@ -2,6 +2,7 @@ package unicycle
 
 import (
 	"errors"
+	"strings"
 	"testing"
 	"time"
 )
@@ -84,21 +85,44 @@ func TestAwaitConcurrentWithErrors(t *testing.T) {
 		t.Error("concurrent")
 	}
 
-	testErr := errors.New("test")
 	err := AwaitConcurrentWithErrors(
 		func() error {
 			return nil
 		},
 		func() error {
 			time.Sleep(time.Second * 1)
-			return testErr
+			return errors.New("test")
 		},
 		func() error {
 			time.Sleep(time.Second * 2)
 			return nil
 		},
 	)
-	if err != testErr {
+	if err == nil {
 		t.Error("AwaitConcurrentWithErrors should return an error if one was returned from a wrapped function")
+	}
+
+	err = AwaitConcurrentWithErrors(
+		func() error {
+			return nil
+		},
+		func() error {
+			time.Sleep(time.Second * 1)
+			return errors.New("test1")
+		},
+		func() error {
+			time.Sleep(time.Second * 1)
+			return errors.New("test2")
+		},
+		func() error {
+			time.Sleep(time.Second * 2)
+			return nil
+		},
+	)
+	if err == nil {
+		t.Error("AwaitConcurrentWithErrors should return an error if multiple were returned from wrapped functions")
+	}
+	if !strings.Contains(err.Error(), "test1") || !strings.Contains(err.Error(), "test2") {
+		t.Error("AwaitConcurrentWithErrors should all errors returned from wrapped functions")
 	}
 }
