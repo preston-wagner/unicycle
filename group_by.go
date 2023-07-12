@@ -1,6 +1,7 @@
 package unicycle
 
 import (
+	"errors"
 	"sync"
 )
 
@@ -36,4 +37,24 @@ func addOrAppend[KEY_TYPE comparable, VALUE_TYPE any](output map[KEY_TYPE][]VALU
 	} else {
 		output[key] = append(output[key], value)
 	}
+}
+
+// like GroupByConcurrently, but allows you to return errors from the keyGenerator function
+func GroupByConcurrentlyWithError[KEY_TYPE comparable, VALUE_TYPE any](input []VALUE_TYPE, keyGenerator func(VALUE_TYPE) (KEY_TYPE, error)) (map[KEY_TYPE][]VALUE_TYPE, error) {
+	output := map[KEY_TYPE][]VALUE_TYPE{}
+	errs := []error{}
+	mux := &sync.Mutex{}
+	AwaitConcurrent(Mapping(input, func(value VALUE_TYPE) func() {
+		return func() {
+			key, err := keyGenerator(value)
+			mux.Lock()
+			defer mux.Unlock()
+			if err != nil {
+				errs = append(errs, err)
+			} else {
+				addOrAppend(output, key, value)
+			}
+		}
+	})...)
+	return output, errors.Join(errs...)
 }
