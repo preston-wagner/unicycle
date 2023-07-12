@@ -2,7 +2,6 @@ package unicycle
 
 import (
 	"errors"
-	"log"
 )
 
 // AwaitConcurrent simplifies the common task of waiting until tasks on multiple threads have finished
@@ -21,12 +20,6 @@ func AwaitConcurrent(funcs ...func()) {
 }
 
 func awaitSafe(pending chan struct{}, wrapped func()) {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Println("panicking goroutine in AwaitConcurrent recovered:", r)
-			pending <- Empty
-		}
-	}()
 	wrapped()
 	pending <- Empty
 }
@@ -53,12 +46,6 @@ func AwaitConcurrentWithErrors(funcs ...func() error) error {
 }
 
 func awaitUnsafe(pending chan error, wrapped func() error) {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Println(r)
-			pending <- ErrAwaitConcurrentWithErrorsPanic
-		}
-	}()
 	pending <- wrapped()
 }
 
