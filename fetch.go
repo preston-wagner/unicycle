@@ -50,16 +50,6 @@ func ResponseOk(response *http.Response) (bool, error) {
 	}
 }
 
-func newFetchError(err error, response *http.Response) error {
-	if err == nil {
-		return nil
-	}
-	return FetchError{
-		Err:      err,
-		Response: response,
-	}
-}
-
 func LogPossibleFetchError(err error) bool {
 	log.Println(err)
 	if fetchError := ErrorAs[FetchError](err); fetchError != nil {

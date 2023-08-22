@@ -19,6 +19,16 @@ func (e FetchError) Unwrap() error {
 	return e.Err
 }
 
+func newFetchError(err error, response *http.Response) error {
+	if err == nil {
+		return nil
+	}
+	return FetchError{
+		Err:      err,
+		Response: response,
+	}
+}
+
 type BadResponseError struct {
 	StatusCode int
 }
