@@ -43,7 +43,7 @@ func ResponseOk(response *http.Response) (bool, error) {
 	if response == nil {
 		return false, errFetchNilResponse
 	} else {
-		if (response.StatusCode < 200) || (300 <= response.StatusCode) {
+		if (response.StatusCode < http.StatusOK) || (http.StatusMultipleChoices <= response.StatusCode) {
 			return false, newFetchError(BadResponseError{StatusCode: response.StatusCode}, response)
 		}
 		return true, nil

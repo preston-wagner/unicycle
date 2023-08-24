@@ -37,6 +37,15 @@ func (e BadResponseError) Error() string {
 	return fmt.Sprintf("non-2XX response status code: %d", e.StatusCode)
 }
 
+// a helper function to simplify checking HTTP status codes from potentially-wrapped errors
+func IsBadResponseWithCode(err error, code int) bool {
+	var badResponseErr BadResponseError
+	if errors.As(err, &badResponseErr) {
+		return badResponseErr.StatusCode == code
+	}
+	return false
+}
+
 var errFetchNilResponse = errors.New("response is nil")
 
 var errFetchFileNoDirectory = errors.New("FetchFile requires a directory")
