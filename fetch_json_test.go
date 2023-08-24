@@ -50,6 +50,9 @@ func TestFetchJsonWith404(t *testing.T) {
 	if err == nil {
 		t.Error("404 response did not return error")
 	}
+	if !IsBadResponseWithCode(err, 404) {
+		t.Error("404 response did not return error wrapping BadResponseError")
+	}
 	if fetchError := ErrorAs[FetchError](err); fetchError == nil {
 		t.Error("FetchJson should have responded with an instance of FetchError (according to ErrorAs)")
 	}
