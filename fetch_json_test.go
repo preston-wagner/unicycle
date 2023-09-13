@@ -68,10 +68,11 @@ func TestFetchJsonAlwaysWith400(t *testing.T) {
 			Code int
 		}
 	}
-	response, err := FetchJsonAlways[fbErrorResponse]("https://graph.facebook.com/v9.0/me", FetchOptions{
+	response, err := FetchJson[fbErrorResponse]("https://graph.facebook.com/v9.0/me", FetchOptions{
 		Query: map[string]string{
 			"access_token": "fakeTokenForUnitTest",
 		},
+		AcceptBadResponse: true,
 	})
 	if err != nil {
 		t.Error(err)
