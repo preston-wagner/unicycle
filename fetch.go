@@ -9,11 +9,13 @@ import (
 )
 
 type FetchOptions struct {
-	Method  string
-	Query   map[string]string
-	Headers map[string]string
-	Body    io.Reader
-	Timeout *time.Duration
+	Method            string
+	Query             map[string]string
+	Headers           map[string]string
+	Body              io.Reader
+	Timeout           *time.Duration
+	Logging           bool
+	AcceptBadResponse bool
 }
 
 func LogResponseDetails(response *http.Response) {
@@ -104,9 +106,16 @@ func Fetch(rawUrl string, options FetchOptions) (*http.Response, error) {
 	client := http.Client{
 		Timeout: timeout,
 	}
+	if options.Logging {
+		log.Println(options.Method, trueUrl)
+	}
 	response, err := client.Do(request)
 	if err != nil {
 		return response, newFetchError(err, response)
+	}
+
+	if options.Logging {
+		log.Println(response.Status)
 	}
 
 	return response, nil

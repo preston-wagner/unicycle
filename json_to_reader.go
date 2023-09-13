@@ -23,13 +23,29 @@ func JsonToReader(input any) io.Reader {
 	return bytes.NewReader(data)
 }
 
+func ReadString(r io.Reader) (string, error) {
+	readerBytes, err := io.ReadAll(r)
+	if err != nil {
+		return "", err
+	}
+	return string(readerBytes), nil
+}
+
 func ReadJson[OUTPUT_TYPE any](r io.Reader) (OUTPUT_TYPE, error) {
-	responseBodyBytes, err := io.ReadAll(r)
+	readerBytes, err := io.ReadAll(r)
 	if err != nil {
 		return ZeroValue[OUTPUT_TYPE](), err
 	}
 
 	var output OUTPUT_TYPE
-	err = json.Unmarshal(responseBodyBytes, &output)
+	err = json.Unmarshal(readerBytes, &output)
+	return output, err
+}
+
+func ReadJsonString[OUTPUT_TYPE any](input string) (OUTPUT_TYPE, error) {
+	readerBytes := []byte(input)
+
+	var output OUTPUT_TYPE
+	err := json.Unmarshal(readerBytes, &output)
 	return output, err
 }

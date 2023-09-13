@@ -22,9 +22,11 @@ func FetchFile(raw_url string, options FetchOptions, directory, filename string)
 		return "", err
 	}
 
-	ok, err := ResponseOk(response)
-	if !ok {
-		return "", err
+	if !options.AcceptBadResponse {
+		ok, err := ResponseOk(response)
+		if !ok {
+			return "", err
+		}
 	}
 
 	filenameParts := strings.Split(filename, ".")
