@@ -9,3 +9,16 @@ func Mapping[INPUT_TYPE any, OUTPUT_TYPE any](input []INPUT_TYPE, mutator func(I
 	}
 	return output
 }
+
+// like Mapping(), but all mutator functions run in parallel in their own goroutines
+func MappingMultithread[INPUT_TYPE any, OUTPUT_TYPE any](input []INPUT_TYPE, mutator func(INPUT_TYPE) OUTPUT_TYPE) []OUTPUT_TYPE {
+	pending := Mapping(input, func(value INPUT_TYPE) *Promise[OUTPUT_TYPE] {
+		return WrapInPromise(func() (OUTPUT_TYPE, error) {
+			return mutator(value), nil
+		})
+	})
+	return Mapping(pending, func(prm *Promise[OUTPUT_TYPE]) OUTPUT_TYPE {
+		value, _ := prm.Await()
+		return value
+	})
+}

@@ -25,3 +25,16 @@ func TestMappingFilter(t *testing.T) {
 		t.Error("MappingFilter(nil) should return a slice with length 0")
 	}
 }
+
+func TestMappingFilterMultithread(t *testing.T) {
+	input := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}
+	result := MappingFilterMultithread(input, toStringIfOdd)
+	result2 := Mapping(Filter(input, odd), toString)
+	if !reflect.DeepEqual(result, result2) {
+		t.Errorf("MappingFilterMultithread() returned unexpected %s", result)
+	}
+
+	if len(MappingFilterMultithread(nil, toStringIfOdd)) != 0 {
+		t.Error("MappingFilterMultithread(nil) should return a slice with length 0")
+	}
+}
