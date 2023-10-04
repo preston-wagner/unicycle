@@ -62,3 +62,26 @@ func TestMappingMultithread(t *testing.T) {
 		t.Error("MappingMultithread(nil) should return a slice with length 0")
 	}
 }
+
+func TestMappingMultithreadWithError(t *testing.T) {
+	result, err := MappingMultithreadWithError([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}, toStringErrIfNegative)
+	if err != nil {
+		t.Error(err)
+	}
+	if !reflect.DeepEqual(result, []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}) {
+		t.Errorf("MappingMultithreadWithError() returned unexpected %s", result)
+	}
+
+	result, err = MappingMultithreadWithError(nil, toStringErrIfNegative)
+	if err != nil {
+		t.Error(err)
+	}
+	if len(result) != 0 {
+		t.Error("MappingMultithreadWithError(nil) should return a slice with length 0")
+	}
+
+	_, err = MappingMultithreadWithError([]int{1, 2, 3, -1, 7, 8}, toStringErrIfNegative)
+	if err == nil {
+		t.Error("MappingMultithreadWithError should return error if any mapping functions do")
+	}
+}
