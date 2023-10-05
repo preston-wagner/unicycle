@@ -1,4 +1,4 @@
-package math
+package math_ext
 
 // returns the smallest of the provided values (or 0 if there are none)
 func Min[N Number](input ...N) N {
