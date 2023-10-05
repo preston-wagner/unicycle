@@ -1,4 +1,4 @@
-package math
+package math_ext
 
 import (
 	"testing"

@@ -1,4 +1,4 @@
-package math
+package math_ext
 
 // returns the largest of the provided values (or 0 if there are none)
 func Max[N Number](input ...N) N {

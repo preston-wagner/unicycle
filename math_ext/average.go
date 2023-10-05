@@ -1,4 +1,4 @@
-package math
+package math_ext
 
 // returns the average of the values of the provided array (or 0 if the array is empty)
 func Average[N Number](input ...N) N {
