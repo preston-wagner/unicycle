@@ -3,7 +3,7 @@ package fetch
 import (
 	"log"
 
-	"github.com/preston-wagner/unicycle/defaults"
+	"github.com/nuvi/unicycle/defaults"
 )
 
 // FetchJson simplifies the common task of making a HTTP request to fetch some JSON data and returning it as a struct

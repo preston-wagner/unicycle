@@ -1,8 +1,8 @@
 package channels
 
 import (
-	"github.com/preston-wagner/unicycle/promises"
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/nuvi/unicycle/promises"
+	"github.com/nuvi/unicycle/slices"
 )
 
 // Like Mapping, but instead of mapping the values of a slice, maps the values of a channel

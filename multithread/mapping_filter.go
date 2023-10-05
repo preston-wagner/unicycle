@@ -1,6 +1,6 @@
 package multithread
 
-import "github.com/preston-wagner/unicycle/slices"
+import "github.com/nuvi/unicycle/slices"
 
 type mappingFilterResult[OUTPUT_TYPE any] struct {
 	mutated OUTPUT_TYPE

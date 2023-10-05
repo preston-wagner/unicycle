@@ -1,8 +1,8 @@
 package channels
 
 import (
-	"github.com/preston-wagner/unicycle/promises"
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/nuvi/unicycle/promises"
+	"github.com/nuvi/unicycle/slices"
 )
 
 // ChannelForEach runs the provided worker on each value passed and blocks until the provided channel closes
