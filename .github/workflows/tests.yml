@@ -27,4 +27,4 @@ jobs:
         env:
           GOFLAGS: -mod=vendor
         run: |
-          go test
+          go test ./...
