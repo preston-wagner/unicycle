@@ -5,7 +5,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/preston-wagner/unicycle/sets"
+	"github.com/nuvi/unicycle/sets"
 )
 
 type accumulator struct {

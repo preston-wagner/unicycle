@@ -1,6 +1,6 @@
 package channels
 
-import "github.com/preston-wagner/unicycle/slices"
+import "github.com/nuvi/unicycle/slices"
 
 // Like Filter, but instead of filtering the values of a slice, filters the values of a channel
 // The output channel has the same capacity as the input channel, and is closed when the input channel is

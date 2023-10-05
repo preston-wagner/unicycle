@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/preston-wagner/unicycle/sets"
+	"github.com/nuvi/unicycle/sets"
 )
 
 func toString(input int) string {

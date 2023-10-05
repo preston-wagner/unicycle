@@ -1,8 +1,8 @@
 package multithread
 
 import (
-	"github.com/preston-wagner/unicycle/promises"
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/nuvi/unicycle/promises"
+	"github.com/nuvi/unicycle/slices"
 )
 
 // like Mapping(), but all mutator functions run in parallel in their own goroutines

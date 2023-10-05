@@ -1,8 +1,8 @@
 package aggregate
 
 import (
-	"github.com/preston-wagner/unicycle/sets"
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/nuvi/unicycle/sets"
+	"github.com/nuvi/unicycle/slices"
 )
 
 // Unique returns a copy of a slice with the duplicate values omitted, preserving order based on the first instance of each element

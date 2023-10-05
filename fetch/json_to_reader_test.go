@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/preston-wagner/unicycle/error_ext"
+	"github.com/nuvi/unicycle/error_ext"
 )
 
 func TestJsonToReader(t *testing.T) {
