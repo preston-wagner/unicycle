@@ -1,6 +1,6 @@
 package multithread
 
-import "github.com/preston-wagner/unicycle/slices"
+import "github.com/nuvi/unicycle/slices"
 
 type filterResult[OUTPUT_TYPE any] struct {
 	value OUTPUT_TYPE
