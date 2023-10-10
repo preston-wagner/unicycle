@@ -1,4 +1,4 @@
-package slices
+package multithread
 
 import (
 	"errors"
@@ -6,18 +6,14 @@ import (
 	"testing"
 )
 
-func odd(input int) bool {
-	return input%2 == 1
-}
-
-func TestFilter(t *testing.T) {
-	result := Filter([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}, odd)
+func TestFilterMultithread(t *testing.T) {
+	result := FilterMultithread([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}, odd)
 	if !reflect.DeepEqual(result, []int{1, 3, 5, 7, 9}) {
-		t.Errorf("Filter() returned unexpected %d", result)
+		t.Errorf("FilterMultithread() returned unexpected %d", result)
 	}
 
-	if len(Filter(nil, odd)) != 0 {
-		t.Error("Filter(nil) should return a slice with length 0")
+	if len(FilterMultithread(nil, odd)) != 0 {
+		t.Error("FilterMultithread(nil) should return a slice with length 0")
 	}
 }
 
@@ -28,8 +24,8 @@ func oddErrIfNegative(input int) (bool, error) {
 	return input%2 == 1, nil
 }
 
-func TestFilterWithError(t *testing.T) {
-	result, err := FilterWithError([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}, oddErrIfNegative)
+func TestFilterMultithreadWithError(t *testing.T) {
+	result, err := FilterMultithreadWithError([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}, oddErrIfNegative)
 	if err != nil {
 		t.Error(err)
 	}
@@ -37,7 +33,7 @@ func TestFilterWithError(t *testing.T) {
 		t.Errorf("FilterWithError() returned unexpected %d", result)
 	}
 
-	result, err = FilterWithError(nil, oddErrIfNegative)
+	result, err = FilterMultithreadWithError(nil, oddErrIfNegative)
 	if err != nil {
 		t.Error(err)
 	}
@@ -45,7 +41,7 @@ func TestFilterWithError(t *testing.T) {
 		t.Error("FilterWithError(nil) should return a slice with length 0")
 	}
 
-	_, err = FilterWithError([]int{1, 2, 3, 4, -5, 6, 7, 8, 9, 0}, oddErrIfNegative)
+	_, err = FilterMultithreadWithError([]int{1, 2, 3, 4, -5, 6, 7, 8, 9, 0}, oddErrIfNegative)
 	if err == nil {
 		t.Error("FilterWithError should return an error if a filter function did")
 	}
