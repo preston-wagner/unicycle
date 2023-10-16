@@ -11,7 +11,7 @@ type Promissory[VALUE_TYPE any] struct {
 	Err   error
 }
 
-// a Promise represents data that is not yet available, but will be provided (most likely by a different goroutine) in the future
+// a Promise represents data (or an error) that is not yet available, but will be provided (most likely by a different goroutine) in the future
 type Promise[VALUE_TYPE any] struct {
 	awaiters []chan Promissory[VALUE_TYPE]
 	result   *Promissory[VALUE_TYPE]
@@ -34,12 +34,12 @@ func WrapInPromise[VALUE_TYPE any](wrapped func() (VALUE_TYPE, error)) *Promise[
 }
 
 func (promise *Promise[VALUE_TYPE]) Await() (VALUE_TYPE, error) {
-	c := make(chan Promissory[VALUE_TYPE])
 	promise.lock.Lock()
 	if promise.result != nil {
 		defer promise.lock.Unlock()
 		return promise.result.Value, promise.result.Err
 	}
+	c := make(chan Promissory[VALUE_TYPE])
 	promise.awaiters = append(promise.awaiters, c)
 	promise.lock.Unlock()
 	result := <-c
