@@ -11,32 +11,35 @@ func TestEmptyPromise(t *testing.T) {
 
 	prm := NewEmptyPromise()
 
-	logResult := func() {
-		err := prm.Await()
-		if err != nil {
-			t.Errorf("no error should be returned when resolved without one")
-		}
-		successes += 1
-	}
-
 	for i := 0; i < loopTimes; i++ {
-		go logResult()
+		go func() {
+			err := prm.Await()
+			if err != nil {
+				t.Errorf("no error should be returned when resolved without one")
+			}
+			successes += 1
+		}()
 	}
 
 	prm.Resolve(nil)
 
 	time.Sleep(duration)
 
+	err := prm.Await()
+	if err != nil {
+		t.Error(err)
+	}
+
 	if successes != loopTimes {
 		t.Errorf("Not all goroutines received resolution as expected (%v != %v)", loopTimes, successes)
 	}
 
-	prm.Resolve(nil)
+	prm.Resolve(errors.New("reresolve with error"))
 
-	err := prm.Await()
+	err = prm.Await()
 
-	if err != nil {
-		t.Error(err)
+	if err == nil {
+		t.Errorf("re-resolution with new value did not work as expected")
 	}
 }
 

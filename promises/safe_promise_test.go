@@ -11,30 +11,35 @@ func TestSafePromise(t *testing.T) {
 
 	prm := NewSafePromise[string]()
 
-	logResult := func() {
-		prm.Await()
-		successes += 1
-	}
-
 	for i := 0; i < loopTimes; i++ {
-		go logResult()
+		go func() {
+			prm.Await()
+			successes += 1
+		}()
 	}
 
-	prm.Resolve("hello world")
+	value := "hello world"
+
+	prm.Resolve(value)
 
 	time.Sleep(duration)
+
+	result := prm.Await()
+	if result != value {
+		t.Errorf("SafePromise.Await() returned wrong result; expected %v, got %v", value, result)
+	}
 
 	if successes != loopTimes {
 		t.Errorf("Not all goroutines received resolution as expected (%v != %v)", loopTimes, successes)
 	}
 
-	newValue := "new value"
+	value = "new value"
 
-	prm.Resolve(newValue)
+	prm.Resolve(value)
 
-	result := prm.Await()
+	result = prm.Await()
 
-	if result != newValue {
+	if result != value {
 		t.Errorf("re-resolution with new value did not work as expected")
 	}
 }

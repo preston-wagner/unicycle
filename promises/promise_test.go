@@ -17,37 +17,44 @@ func TestPromise(t *testing.T) {
 
 	prm := NewPromise[string]()
 
-	logResult := func() {
-		_, err := prm.Await()
-		if err != nil {
-			t.Errorf("no error should be returned when resolved without one")
-		}
-		successes += 1
-	}
-
 	for i := 0; i < loopTimes; i++ {
-		go logResult()
+		go func() {
+			_, err := prm.Await()
+			if err != nil {
+				t.Errorf("no error should be returned when resolved without one")
+			}
+			successes += 1
+		}()
 	}
 
-	prm.Resolve("hello world", nil)
+	value := "hello world"
+	prm.Resolve(value, nil)
 
 	time.Sleep(duration)
+
+	result, err := prm.Await()
+	if err != nil {
+		t.Error(err)
+	}
+	if result != value {
+		t.Errorf("Promise.Await() returned wrong result; expected %v, got %v", value, result)
+	}
 
 	if successes != loopTimes {
 		t.Errorf("Not all goroutines received resolution as expected (%v != %v)", loopTimes, successes)
 	}
 
-	newValue := "new value"
+	value = "new value"
 
-	prm.Resolve(newValue, nil)
+	prm.Resolve(value, nil)
 
-	result, err := prm.Await()
+	result, err = prm.Await()
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if result != newValue {
+	if result != value {
 		t.Errorf("re-resolution with new value did not work as expected")
 	}
 }

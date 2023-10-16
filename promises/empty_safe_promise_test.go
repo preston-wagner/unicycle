@@ -10,18 +10,18 @@ func TestEmptySafePromise(t *testing.T) {
 
 	prm := NewEmptySafePromise()
 
-	logResult := func() {
-		prm.Await()
-		successes += 1
-	}
-
 	for i := 0; i < loopTimes; i++ {
-		go logResult()
+		go func() {
+			prm.Await()
+			successes += 1
+		}()
 	}
 
 	prm.Resolve()
 
 	time.Sleep(duration)
+
+	prm.Await()
 
 	if successes != loopTimes {
 		t.Errorf("Not all goroutines received resolution as expected (%v != %v)", loopTimes, successes)
