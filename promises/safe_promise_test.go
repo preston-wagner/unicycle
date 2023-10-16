@@ -59,10 +59,10 @@ func TestAwaitAllSafe(t *testing.T) {
 		WrapInSafePromise(func() int { time.Sleep(duration * 1); return 3 }),
 	)
 	if !reflect.DeepEqual(result, []int{1, 2, 3}) {
-		t.Errorf("AwaitAll() returned unexpected %v", result)
+		t.Errorf("AwaitAllSafe() returned unexpected %v", result)
 	}
 
 	if len(AwaitAll[int]()) != 0 {
-		t.Error("AwaitAll() with no args should return a slice with length 0")
+		t.Error("AwaitAllSafe() with no args should return a slice with length 0")
 	}
 }
