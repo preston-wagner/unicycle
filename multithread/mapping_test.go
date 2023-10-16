@@ -1,36 +1,25 @@
 package multithread
 
 import (
-	"errors"
-	"fmt"
 	"reflect"
 	"testing"
+
+	"github.com/preston-wagner/unicycle/test_ext"
 )
 
-func toString(input int) string {
-	return fmt.Sprintf("%d", input)
-}
-
-func toStringErrIfNegative(input int) (string, error) {
-	if input < 0 {
-		return "", errors.New("toStringIfOddErrIfNegative(): negative number")
-	}
-	return fmt.Sprintf("%d", input), nil
-}
-
 func TestMappingMultithread(t *testing.T) {
-	result := MappingMultithread([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}, toString)
+	result := MappingMultithread([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}, test_ext.ToString)
 	if !reflect.DeepEqual(result, []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}) {
 		t.Errorf("MappingMultithread() returned unexpected %s", result)
 	}
 
-	if len(MappingMultithread(nil, toString)) != 0 {
+	if len(MappingMultithread(nil, test_ext.ToString)) != 0 {
 		t.Error("MappingMultithread(nil) should return a slice with length 0")
 	}
 }
 
 func TestMappingMultithreadWithError(t *testing.T) {
-	result, err := MappingMultithreadWithError([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}, toStringErrIfNegative)
+	result, err := MappingMultithreadWithError([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}, test_ext.ToStringErrIfNegative)
 	if err != nil {
 		t.Error(err)
 	}
@@ -38,7 +27,7 @@ func TestMappingMultithreadWithError(t *testing.T) {
 		t.Errorf("MappingMultithreadWithError() returned unexpected %s", result)
 	}
 
-	result, err = MappingMultithreadWithError(nil, toStringErrIfNegative)
+	result, err = MappingMultithreadWithError(nil, test_ext.ToStringErrIfNegative)
 	if err != nil {
 		t.Error(err)
 	}
@@ -46,7 +35,7 @@ func TestMappingMultithreadWithError(t *testing.T) {
 		t.Error("MappingMultithreadWithError(nil) should return a slice with length 0")
 	}
 
-	_, err = MappingMultithreadWithError([]int{1, 2, 3, -1, 7, 8}, toStringErrIfNegative)
+	_, err = MappingMultithreadWithError([]int{1, 2, 3, -1, 7, 8}, test_ext.ToStringErrIfNegative)
 	if err == nil {
 		t.Error("MappingMultithreadWithError should return error if any mapping functions do")
 	}
