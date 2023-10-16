@@ -54,18 +54,18 @@ func TestWrapInEmptyPromise(t *testing.T) {
 
 func TestAwaitAllEmpty(t *testing.T) {
 	err := AwaitAllEmpty(
-		WrapInEmptyPromise(func() error { return nil }),
-		WrapInEmptyPromise(func() error { return nil }),
-		WrapInEmptyPromise(func() error { return nil }),
+		WrapInEmptyPromise(func() error { time.Sleep(duration * 3); return nil }),
+		WrapInEmptyPromise(func() error { time.Sleep(duration * 2); return nil }),
+		WrapInEmptyPromise(func() error { time.Sleep(duration * 1); return nil }),
 	)
 	if err != nil {
 		t.Errorf("AwaitAllEmpty() returned unexpected error %v", err)
 	}
 
 	err = AwaitAllEmpty(
-		WrapInEmptyPromise(func() error { return nil }),
-		WrapInEmptyPromise(func() error { return errors.New("bad result 1") }),
-		WrapInEmptyPromise(func() error { return nil }),
+		WrapInEmptyPromise(func() error { time.Sleep(duration * 3); return nil }),
+		WrapInEmptyPromise(func() error { time.Sleep(duration * 2); return errors.New("bad result 1") }),
+		WrapInEmptyPromise(func() error { time.Sleep(duration * 1); return nil }),
 	)
 	if err == nil {
 		t.Errorf("AwaitAllEmpty() should have returned an error when a resolver did")
