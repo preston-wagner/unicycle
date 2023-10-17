@@ -1,4 +1,4 @@
-package channels
+package multithread
 
 import (
 	"github.com/preston-wagner/unicycle/promises"

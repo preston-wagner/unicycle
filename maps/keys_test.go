@@ -1,8 +1,9 @@
-package maps
+package maps_test
 
 import (
 	"testing"
 
+	"github.com/preston-wagner/unicycle/maps"
 	"github.com/preston-wagner/unicycle/slices"
 )
 
@@ -12,7 +13,7 @@ func TestKeys(t *testing.T) {
 		"b": 1,
 		"c": 1,
 	}
-	result := Keys(input)
+	result := maps.Keys(input)
 	if len(result) != len(input) {
 		t.Errorf("Keys() failed to return the correct number of keys")
 	}

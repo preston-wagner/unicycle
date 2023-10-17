@@ -1,8 +1,7 @@
-package aggregate
+package slices
 
 import (
 	"github.com/preston-wagner/unicycle/sets"
-	"github.com/preston-wagner/unicycle/slices"
 )
 
 // Unique returns a copy of a slice with the duplicate values omitted, preserving order based on the first instance of each element
@@ -15,5 +14,5 @@ func Unique[T comparable](input []T) []T {
 			set.Add(value)
 		}
 	}
-	return slices.Trim(output)
+	return Trim(output)
 }
