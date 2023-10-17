@@ -23,3 +23,21 @@ func GetenvOrFatalInt(environmentVariableName string) int {
 	}
 	return variableInt
 }
+
+func GetenvOrFatalFloat(environmentVariableName string) float64 {
+	variableString := GetenvOrFatal(environmentVariableName)
+	variableFloat, err := strconv.ParseFloat(variableString, 64)
+	if err != nil {
+		log.Fatalf("environment variable %s could not be interpreted as a float64", environmentVariableName)
+	}
+	return variableFloat
+}
+
+func GetenvOrFatalBool(environmentVariableName string) bool {
+	variableString := GetenvOrFatal(environmentVariableName)
+	variableBool, err := strconv.ParseBool(variableString)
+	if err != nil {
+		log.Fatalf("environment variable %s could not be interpreted as a bool", environmentVariableName)
+	}
+	return variableBool
+}
