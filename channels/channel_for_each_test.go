@@ -26,38 +26,14 @@ func newAccumulator() accumulator {
 	}
 }
 
-func TestForEachMultithread(t *testing.T) {
+func TestChannelForEach(t *testing.T) {
 	input := []string{"a", "b", "c", "d", "e", "f", "g"}
 
 	acc := newAccumulator()
 
-	ForEachMultithread(input, acc.Add, len(input)/3)
+	ChannelForEach(SliceToChannel(input), acc.Add)
 
 	if !reflect.DeepEqual(acc.set, sets.SetFromSlice(input)) {
-		t.Error("ForEachMultithread() wasn't called on every value")
-	}
-}
-
-func TestForEachMultithreadSingle(t *testing.T) {
-	input := []string{"a", "b", "c", "d", "e", "f", "g"}
-
-	acc := newAccumulator()
-
-	ForEachMultithread(input, acc.Add, 1)
-
-	if !reflect.DeepEqual(acc.set, sets.SetFromSlice(input)) {
-		t.Error("ForEachMultithread() wasn't called on every value")
-	}
-}
-
-func TestForEachMultithreadManyWorkers(t *testing.T) {
-	input := []string{"a", "b", "c", "d", "e", "f", "g"}
-
-	acc := newAccumulator()
-
-	ForEachMultithread(input, acc.Add, len(input)+10)
-
-	if !reflect.DeepEqual(acc.set, sets.SetFromSlice(input)) {
-		t.Error("ForEachMultithread() wasn't called on every value")
+		t.Error("ChannelForEach() worker wasn't called on every value")
 	}
 }
