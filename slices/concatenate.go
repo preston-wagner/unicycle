@@ -1,6 +1,7 @@
 package slices
 
-// Concatenate takes any number of slices and copies their values into a new slice
+// Concatenate accepts any number of slices and copies their values into a new slice, essentially joining the slices together.
+// Performance: O(n) (where n is the total number of values across all provided slices)
 func Concatenate[INPUT_TYPE any](input ...[]INPUT_TYPE) []INPUT_TYPE {
 	resultLength := Reduce(input, func(acc int, arr []INPUT_TYPE) int {
 		return acc + len(arr)
