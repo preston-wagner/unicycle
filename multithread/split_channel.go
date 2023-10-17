@@ -1,7 +1,6 @@
 package multithread
 
 import (
-	"github.com/preston-wagner/unicycle/promises"
 	"github.com/preston-wagner/unicycle/slices"
 )
 
@@ -30,14 +29,18 @@ func SplitChannel[T any](input chan T, splitCount int) []chan T {
 func MergeChannels[T any](input []chan T, capacity int) chan T {
 	output := make(chan T, capacity)
 	go func() {
-		promises.AwaitAll(slices.Mapping(input, func(inputChan chan T) *promises.Promise[bool] {
-			return promises.WrapInPromise(func() (bool, error) {
-				for value := range inputChan {
-					output <- value
-				}
-				return true, nil
-			})
-		})...)
+		AwaitConcurrent(
+			slices.Mapping(
+				input,
+				func(inputChan chan T) func() {
+					return func() {
+						for value := range inputChan {
+							output <- value
+						}
+					}
+				},
+			)...,
+		)
 		close(output)
 	}()
 	return output
