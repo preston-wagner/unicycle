@@ -44,7 +44,7 @@ func TestMergeChannels(t *testing.T) {
 		inputs[2] <- 3
 	}()
 
-	output := MergeChannels(inputs, 0)
+	output := MergeChannels(inputs)
 
 	time.Sleep(time.Second)
 
