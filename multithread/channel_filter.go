@@ -15,6 +15,5 @@ func ChannelFilterMultithread[T any](input chan T, filter func(T) bool, threadCo
 				return channels.ChannelFilter(inputChan, filter)
 			},
 		),
-		cap(input),
 	)
 }
