@@ -1,6 +1,6 @@
 package math_ext
 
-// returns the average of the values of the provided array (or 0 if the array is empty)
+// returns the average of the provided values (or 0 if there are none)
 func Average[N Number](input ...N) N {
 	count := len(input)
 	if count > 0 {
@@ -9,7 +9,7 @@ func Average[N Number](input ...N) N {
 	return 0
 }
 
-// returns the average of the values of the provided array (or 0 if the array is empty) as a float64
+// returns the average of the provided values (or 0 if there are none) as a float64 for maximum precision
 func Average64[N Number](input ...N) float64 {
 	count := len(input)
 	if count > 0 {
