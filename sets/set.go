@@ -3,7 +3,6 @@ package sets
 import (
 	"github.com/nuvi/unicycle/defaults"
 	"github.com/nuvi/unicycle/maps"
-	"github.com/nuvi/unicycle/slices"
 )
 
 // Sets are basically maps with no values; empty structs have a width of 0 bytes
@@ -39,11 +38,10 @@ func (set Set[T]) Values() []T {
 
 // Difference returns the set of values contained in the base set but not in any others
 func (set Set[T]) Difference(others ...Set[T]) Set[T] {
+	allOthers := Union(others...)
 	result := Set[T]{}
 	for value := range set {
-		if !slices.Some(others, func(other Set[T]) bool {
-			return other.Has(value)
-		}) {
+		if !allOthers.Has(value) {
 			result.Add(value)
 		}
 	}
@@ -52,12 +50,14 @@ func (set Set[T]) Difference(others ...Set[T]) Set[T] {
 
 func (set Set[T]) intersection(others ...Set[T]) Set[T] {
 	result := Set[T]{}
+ValueLoop:
 	for value := range set {
-		if slices.Every(others, func(other Set[T]) bool {
-			return other.Has(value)
-		}) {
-			result.Add(value)
+		for _, other := range others {
+			if !other.Has(value) {
+				continue ValueLoop
+			}
 		}
+		result.Add(value)
 	}
 	return result
 }

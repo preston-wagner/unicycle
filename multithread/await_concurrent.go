@@ -50,5 +50,3 @@ func AwaitConcurrentWithErrors(funcs ...func() error) error {
 func awaitUnsafe(pending chan error, wrapped func() error) {
 	pending <- wrapped()
 }
-
-var ErrAwaitConcurrentWithErrorsPanic = errors.New("panicking goroutine in AwaitConcurrentWithErrors recovered")

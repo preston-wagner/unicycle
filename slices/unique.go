@@ -1,13 +1,13 @@
-package aggregate
+package slices
 
 import (
 	"github.com/nuvi/unicycle/sets"
-	"github.com/nuvi/unicycle/slices"
 )
 
-// Unique returns a copy of a slice with the duplicate values omitted, preserving order based on the first instance of each element
+// Unique accepts a slice of data, and returns a new slice containing only the first instance of each unique value.
+// Performance: ~O(n)
 func Unique[T comparable](input []T) []T {
-	set := sets.Set[T]{}
+	set := make(sets.Set[T], len(input))
 	output := make([]T, 0, len(input))
 	for _, value := range input {
 		if !set.Has(value) {
@@ -15,5 +15,5 @@ func Unique[T comparable](input []T) []T {
 			set.Add(value)
 		}
 	}
-	return slices.Trim(output)
+	return Trim(output)
 }

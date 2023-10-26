@@ -1,6 +1,8 @@
 package slices
 
-// Equivalent to lodash's _.groupBy()
+// GroupBy accepts a slice of data and key generator function, and returns a map of keys to slices of values (i.e. grouping values by their keys).
+// Useful for optimizing lookups.
+// Performance: O(n*log(n))
 func GroupBy[KEY_TYPE comparable, VALUE_TYPE any](input []VALUE_TYPE, keyGenerator func(VALUE_TYPE) KEY_TYPE) map[KEY_TYPE][]VALUE_TYPE {
 	output := map[KEY_TYPE][]VALUE_TYPE{}
 	for _, value := range input {
