@@ -19,12 +19,12 @@ func fromMutatorChannel[OUTPUT_TYPE any](channel chan OUTPUT_TYPE) OUTPUT_TYPE {
 	return <-channel
 }
 
-// like Mapping(), but all mutator functions run in parallel in their own goroutines
+// like slices.Mapping(), but all mutator functions run in parallel in their own goroutines
 func MappingMultithread[INPUT_TYPE any, OUTPUT_TYPE any](input []INPUT_TYPE, mutator func(INPUT_TYPE) OUTPUT_TYPE) []OUTPUT_TYPE {
 	return slices.Mapping(slices.Mapping(input, toMutatorChannel(mutator)), fromMutatorChannel[OUTPUT_TYPE])
 }
 
-// like MappingWithError(), but all mutator functions run in parallel in their own goroutines
+// like slices.MappingWithError(), but all mutator functions run in parallel in their own goroutines
 func MappingMultithreadWithError[INPUT_TYPE any, OUTPUT_TYPE any](input []INPUT_TYPE, mutator func(INPUT_TYPE) (OUTPUT_TYPE, error)) ([]OUTPUT_TYPE, error) {
 	pending := slices.Mapping(input, func(value INPUT_TYPE) *promises.Promise[OUTPUT_TYPE] {
 		return promises.WrapInPromise(func() (OUTPUT_TYPE, error) {
