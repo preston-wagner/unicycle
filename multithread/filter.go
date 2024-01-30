@@ -2,11 +2,6 @@ package multithread
 
 import "github.com/preston-wagner/unicycle/slices"
 
-type filterResult[OUTPUT_TYPE any] struct {
-	value OUTPUT_TYPE
-	ok    bool
-}
-
 // like Filter, but multithreaded
 func FilterMultithread[T any](input []T, filter func(T) bool) []T {
 	results := MappingMultithread(input, func(value T) filterResult[T] {

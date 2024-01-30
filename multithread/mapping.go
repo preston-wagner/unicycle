@@ -1,7 +1,6 @@
 package multithread
 
 import (
-	"github.com/preston-wagner/unicycle/promises"
 	"github.com/preston-wagner/unicycle/slices"
 )
 
@@ -26,12 +25,14 @@ func MappingMultithread[INPUT_TYPE any, OUTPUT_TYPE any](input []INPUT_TYPE, mut
 
 // like slices.MappingWithError(), but all mutator functions run in parallel in their own goroutines
 func MappingMultithreadWithError[INPUT_TYPE any, OUTPUT_TYPE any](input []INPUT_TYPE, mutator func(INPUT_TYPE) (OUTPUT_TYPE, error)) ([]OUTPUT_TYPE, error) {
-	pending := slices.Mapping(input, func(value INPUT_TYPE) *promises.Promise[OUTPUT_TYPE] {
-		return promises.WrapInPromise(func() (OUTPUT_TYPE, error) {
-			return mutator(value)
-		})
+	results := MappingMultithread(input, func(value INPUT_TYPE) errorResult[OUTPUT_TYPE] {
+		mutated, err := mutator(value)
+		return errorResult[OUTPUT_TYPE]{
+			value: mutated,
+			err:   err,
+		}
 	})
-	return slices.MappingWithError(pending, func(prm *promises.Promise[OUTPUT_TYPE]) (OUTPUT_TYPE, error) {
-		return prm.Await()
+	return slices.MappingWithError(results, func(result errorResult[OUTPUT_TYPE]) (OUTPUT_TYPE, error) {
+		return result.value, result.err
 	})
 }
