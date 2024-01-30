@@ -10,4 +10,8 @@ func TestConcatenate(t *testing.T) {
 	if !reflect.DeepEqual(result, []string{"a", "b", "c", "d", "e", "f", "g", "h", "i"}) {
 		t.Errorf("Concatenate() returned unexpected %s", result)
 	}
+	result = Concatenate([]string{"a", "b"}, nil, []string{"c", "d", "e", "f", "g", "h"}, []string{"i"})
+	if !reflect.DeepEqual(result, []string{"a", "b", "c", "d", "e", "f", "g", "h", "i"}) {
+		t.Errorf("Concatenate() returned unexpected %s", result)
+	}
 }
