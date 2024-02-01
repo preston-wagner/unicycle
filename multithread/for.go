@@ -12,14 +12,14 @@ func ForMultithread[INPUT_TYPE any](input []INPUT_TYPE, apply func(INPUT_TYPE)) 
 	}
 	counter := NewSemaphoreInt()
 	done := make(chan struct{})
-	for _, value := range input {
-		go func(value INPUT_TYPE) {
-			apply(value)
+	for index := range input {
+		go func(index int) {
+			apply(input[index])
 			finished := counter.Add(1)
 			if finished == total {
 				done <- defaults.Empty
 			}
-		}(value)
+		}(index)
 	}
 	<-done
 }
