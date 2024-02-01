@@ -1,7 +1,6 @@
 package channels
 
 import (
-	"log"
 	"reflect"
 	"testing"
 	"time"
@@ -74,16 +73,13 @@ func TestChannelDebatch(t *testing.T) {
 	if <-output != "amet" {
 		t.Error("ChannelDebatch should have split the provided batch into constituent items, preserving order")
 	}
-	log.Println("4")
 	go func() {
 		input <- []string{"singleton"}
 	}()
 	if <-output != "singleton" {
 		t.Error("ChannelDebatch should have debatched the batch regardless of size")
 	}
-	log.Println("5")
 	close(input)
 	for range output { // ensures closing input closes output
 	}
-	log.Println("6")
 }
