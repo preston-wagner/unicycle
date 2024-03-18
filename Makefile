@@ -1,4 +1,4 @@
-all: test vet
+all: test vet vuln
 
 benchmark:
 	go test ./... -bench=.
@@ -12,3 +12,6 @@ test:
 
 vet:
 	go vet ./...
+
+vuln:
+	govulncheck ./...
