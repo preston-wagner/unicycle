@@ -1,4 +1,4 @@
-package multithread
+package repeat
 
 import (
 	"context"
