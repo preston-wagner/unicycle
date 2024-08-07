@@ -10,6 +10,9 @@ coverage:
 test:
 	go test ./...
 
+staticcheck:
+	staticcheck -f stylish ./...
+
 vet:
 	go vet ./...
 
