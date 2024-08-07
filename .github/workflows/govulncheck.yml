@@ -1,14 +1,12 @@
-name: Tests
+name: govulncheck
 
 on:
-  push:
-    branches: [main]
   pull_request:
-    branches: [main]
+    branches: [main, prod]
 
 jobs:
   test:
-    name: Test
+    name: govulncheck
     runs-on: ubuntu-latest
     env:
       GOPROXY: "https://proxy.golang.org,direct"
@@ -28,14 +26,8 @@ jobs:
           export PATH=$PATH:$(go env GOPATH)/bin
           go install golang.org/x/vuln/cmd/govulncheck@latest
 
-      - name: make test
+      - name: make vuln
         env:
           GOFLAGS: -mod=vendor
         run: |
-          make test
-
-      - name: make vet
-        env:
-          GOFLAGS: -mod=vendor
-        run: |
-          make vet
+          make vuln
