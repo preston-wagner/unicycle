@@ -1,14 +1,12 @@
-name: Tests
+name: staticcheck
 
 on:
-  push:
-    branches: [main]
   pull_request:
-    branches: [main]
+    branches: [main, prod]
 
 jobs:
   test:
-    name: Test
+    name: staticcheck
     runs-on: ubuntu-latest
     env:
       GOPROXY: "https://proxy.golang.org,direct"
@@ -23,19 +21,12 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v1
 
-      - name: install govulncheck
+      - name: install staticcheck
         run: |
-          export PATH=$PATH:$(go env GOPATH)/bin
-          go install golang.org/x/vuln/cmd/govulncheck@latest
+          cd /tmp && go install honnef.co/go/tools/cmd/staticcheck@latest
 
-      - name: make test
+      - name: make staticcheck
         env:
           GOFLAGS: -mod=vendor
         run: |
-          make test
-
-      - name: make vet
-        env:
-          GOFLAGS: -mod=vendor
-        run: |
-          make vet
+          make staticcheck
