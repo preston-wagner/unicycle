@@ -1,4 +1,4 @@
-package fetch
+package json_ext
 
 import (
 	"bytes"
@@ -23,14 +23,6 @@ func JsonToReader(input any) io.Reader {
 		return errReader{err: err}
 	}
 	return bytes.NewReader(data)
-}
-
-func ReadString(r io.Reader) (string, error) {
-	readerBytes, err := io.ReadAll(r)
-	if err != nil {
-		return "", err
-	}
-	return string(readerBytes), nil
 }
 
 func ReadJson[OUTPUT_TYPE any](r io.Reader) (OUTPUT_TYPE, error) {
