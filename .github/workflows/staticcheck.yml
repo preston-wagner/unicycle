@@ -1,8 +1,10 @@
 name: staticcheck
 
 on:
+  push:
+    branches: [main]
   pull_request:
-    branches: [main, prod]
+    branches: [main]
 
 jobs:
   test:
