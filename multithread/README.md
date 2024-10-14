@@ -17,4 +17,4 @@ AwaitConcurrent(func(){
 
 ### multithread.MappingMultithread
 Many of the functions provided by this submodule are parallelized versions of functions provided by other submodules.
-In this case, `multithread.MappingMultithread` acts like `slices.Mapping`, except that all mapping functions are run in parallel instead of serially.
+In this case, `multithread.MappingMultithread` acts like `slices_ext.Mapping`, except that all mapping functions are run in parallel instead of serially.

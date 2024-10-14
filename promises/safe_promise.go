@@ -3,7 +3,7 @@ package promises
 import (
 	"sync"
 
-	"github.com/nuvi/unicycle/slices"
+	"github.com/nuvi/unicycle/slices_ext"
 )
 
 // a SafePromise represents data that is not yet available, but will be provided (most likely by a different goroutine) in the future
@@ -55,7 +55,7 @@ func (promise *SafePromise[VALUE_TYPE]) Resolve(value VALUE_TYPE) {
 }
 
 func AwaitAllSafe[VALUE_TYPE any](promises ...*SafePromise[VALUE_TYPE]) []VALUE_TYPE {
-	return slices.Mapping(promises, func(prm *SafePromise[VALUE_TYPE]) VALUE_TYPE {
+	return slices_ext.Mapping(promises, func(prm *SafePromise[VALUE_TYPE]) VALUE_TYPE {
 		return prm.Await()
 	})
 }

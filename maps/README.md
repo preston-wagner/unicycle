@@ -36,7 +36,7 @@ Performance: `O(n*log(n))`
 
 ### maps.FilterMap
 Given a map and a filter function, returns a new map containing only the subset of key/value pairs that pass the filter function.
-Conceptually similar to `slices.Filter`.
+Conceptually similar to `slices_ext.Filter`.
 
 Performance: `O(n*log(n))`
 

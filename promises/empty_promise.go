@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/nuvi/unicycle/slices"
+	"github.com/nuvi/unicycle/slices_ext"
 )
 
 // an EmptyPromise represents a function (that may return an error) that has not yet resolved but will in the future
@@ -56,7 +56,7 @@ func (promise *EmptyPromise) Resolve(err error) {
 }
 
 func AwaitAllEmpty(promises ...*EmptyPromise) error {
-	return errors.Join(slices.Mapping(promises, func(promise *EmptyPromise) error {
+	return errors.Join(slices_ext.Mapping(promises, func(promise *EmptyPromise) error {
 		return promise.Await()
 	})...)
 }

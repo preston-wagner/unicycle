@@ -3,7 +3,7 @@ package promises
 import (
 	"sync"
 
-	"github.com/nuvi/unicycle/slices"
+	"github.com/nuvi/unicycle/slices_ext"
 )
 
 type Promissory[VALUE_TYPE any] struct {
@@ -65,7 +65,7 @@ func (promise *Promise[VALUE_TYPE]) Resolve(value VALUE_TYPE, err error) {
 }
 
 func AwaitAll[VALUE_TYPE any](promises ...*Promise[VALUE_TYPE]) []Promissory[VALUE_TYPE] {
-	return slices.Mapping(promises, func(promise *Promise[VALUE_TYPE]) Promissory[VALUE_TYPE] {
+	return slices_ext.Mapping(promises, func(promise *Promise[VALUE_TYPE]) Promissory[VALUE_TYPE] {
 		value, err := promise.Await()
 		return Promissory[VALUE_TYPE]{
 			Value: value,

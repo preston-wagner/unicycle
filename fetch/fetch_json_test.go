@@ -1,21 +1,17 @@
 package fetch
 
 import (
+	"encoding/json"
 	"errors"
 	"testing"
 
 	"github.com/nuvi/unicycle/error_ext"
+	"github.com/nuvi/unicycle/json_ext"
+	"github.com/nuvi/unicycle/test_ext"
 )
 
-type jsonPlaceholder struct {
-	UserId    int    `json:"userId"`
-	ID        int    `json:"id"`
-	Title     string `json:"title"`
-	Completed bool   `json:"completed"`
-}
-
 func TestFetchJson(t *testing.T) {
-	placeholder, err := FetchJson[jsonPlaceholder]("https://jsonplaceholder.typicode.com/todos/1", FetchOptions{})
+	placeholder, err := FetchJson[test_ext.JsonPlaceholder]("https://jsonplaceholder.typicode.com/todos/1", FetchOptions{})
 	if err != nil {
 		t.Error("Error fetching test json")
 	}
@@ -34,7 +30,7 @@ func TestFetchJson(t *testing.T) {
 }
 
 func TestFetchJsonWithoutJson(t *testing.T) {
-	_, err := FetchJson[jsonPlaceholder]("https://jsonplaceholder.typicode.com/", FetchOptions{})
+	_, err := FetchJson[test_ext.JsonPlaceholder]("https://jsonplaceholder.typicode.com/", FetchOptions{})
 	if err == nil {
 		t.Error("Non-json response did not return error")
 	}
@@ -48,7 +44,7 @@ func TestFetchJsonWithoutJson(t *testing.T) {
 }
 
 func TestFetchJsonWith404(t *testing.T) {
-	_, err := FetchJson[jsonPlaceholder]("https://www.google.com/badUrl", FetchOptions{})
+	_, err := FetchJson[test_ext.JsonPlaceholder]("https://www.google.com/badUrl", FetchOptions{})
 	if err == nil {
 		t.Error("404 response did not return error")
 	}
@@ -81,5 +77,17 @@ func TestFetchJsonAlwaysWith400(t *testing.T) {
 	}
 	if response.Error.Code != 190 {
 		t.Error("FetchJsonAlways https://graph.facebook.com/v8.0/me response.Error.Code != 190")
+	}
+}
+
+func TestJsonFetchBody(t *testing.T) {
+	_, err := Fetch("https://www.google.com/", FetchOptions{
+		Body: json_ext.JsonToReader(make(chan int)),
+	})
+	if err == nil {
+		t.Error("calling Fetch with an unmarshallable body should result in an error")
+	}
+	if wrappedErr := error_ext.ErrorAs[json.UnsupportedTypeError](err); wrappedErr == nil {
+		t.Error("calling Fetch with an unmarshallable body should result in an UnsupportedTypeError, got:", err)
 	}
 }
