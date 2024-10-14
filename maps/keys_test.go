@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/preston-wagner/unicycle/maps"
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/preston-wagner/unicycle/slices_ext"
 )
 
 func TestKeys(t *testing.T) {
@@ -17,7 +17,7 @@ func TestKeys(t *testing.T) {
 	if len(result) != len(input) {
 		t.Errorf("Keys() failed to return the correct number of keys")
 	}
-	if (!slices.Includes(result, "a")) || (!slices.Includes(result, "b")) || (!slices.Includes(result, "c")) {
+	if (!slices_ext.Includes(result, "a")) || (!slices_ext.Includes(result, "b")) || (!slices_ext.Includes(result, "c")) {
 		t.Errorf("Keys() failed to return expected values")
 	}
 }

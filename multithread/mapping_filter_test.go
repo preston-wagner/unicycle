@@ -4,14 +4,14 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/preston-wagner/unicycle/slices_ext"
 	"github.com/preston-wagner/unicycle/test_ext"
 )
 
 func TestMappingFilterMultithread(t *testing.T) {
 	input := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}
 	result := MappingFilterMultithread(input, test_ext.ToStringIfOdd)
-	result2 := slices.Mapping(slices.Filter(input, test_ext.Odd), test_ext.ToString)
+	result2 := slices_ext.Mapping(slices_ext.Filter(input, test_ext.Odd), test_ext.ToString)
 	if !reflect.DeepEqual(result, result2) {
 		t.Errorf("MappingFilterMultithread() returned unexpected %s", result)
 	}
@@ -27,7 +27,7 @@ func TestMappingFilterMultithreadWithError(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	result2 := slices.Mapping(slices.Filter(input, test_ext.Odd), test_ext.ToString)
+	result2 := slices_ext.Mapping(slices_ext.Filter(input, test_ext.Odd), test_ext.ToString)
 	if !reflect.DeepEqual(result, result2) {
 		t.Errorf("MappingFilterMultithreadWithError() returned unexpected %s", result)
 	}

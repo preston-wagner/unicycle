@@ -1,7 +1,7 @@
 package multithread
 
 import (
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/preston-wagner/unicycle/slices_ext"
 )
 
 // accepts any number of channels of the same type and returns a single unbuffered channel that pulls from all of them at once
@@ -10,7 +10,7 @@ func MergeChannels[T any](input []chan T) chan T {
 	output := make(chan T)
 	go func() {
 		AwaitConcurrent(
-			slices.Mapping(
+			slices_ext.Mapping(
 				input,
 				func(inputChan chan T) func() {
 					return func() {

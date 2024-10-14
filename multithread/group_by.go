@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/preston-wagner/unicycle/slices_ext"
 )
 
 func addOrAppend[KEY_TYPE comparable, VALUE_TYPE any](output map[KEY_TYPE][]VALUE_TYPE, key KEY_TYPE, value VALUE_TYPE) {
@@ -20,7 +20,7 @@ func addOrAppend[KEY_TYPE comparable, VALUE_TYPE any](output map[KEY_TYPE][]VALU
 func GroupByConcurrently[KEY_TYPE comparable, VALUE_TYPE any](input []VALUE_TYPE, keyGenerator func(VALUE_TYPE) KEY_TYPE) map[KEY_TYPE][]VALUE_TYPE {
 	output := map[KEY_TYPE][]VALUE_TYPE{}
 	mux := &sync.Mutex{}
-	AwaitConcurrent(slices.Mapping(input, func(value VALUE_TYPE) func() {
+	AwaitConcurrent(slices_ext.Mapping(input, func(value VALUE_TYPE) func() {
 		return func() {
 			key := keyGenerator(value)
 			mux.Lock()
@@ -36,7 +36,7 @@ func GroupByConcurrentlyWithError[KEY_TYPE comparable, VALUE_TYPE any](input []V
 	output := map[KEY_TYPE][]VALUE_TYPE{}
 	errs := []error{}
 	mux := &sync.Mutex{}
-	AwaitConcurrent(slices.Mapping(input, func(value VALUE_TYPE) func() {
+	AwaitConcurrent(slices_ext.Mapping(input, func(value VALUE_TYPE) func() {
 		return func() {
 			key, err := keyGenerator(value)
 			mux.Lock()
