@@ -5,14 +5,14 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/preston-wagner/unicycle/slices_ext"
 	"github.com/preston-wagner/unicycle/test_ext"
 )
 
 func TestChannelMapping(t *testing.T) {
 	inputSlice := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}
 	result := ChannelToSlice(ChannelMapping(SliceToChannel(inputSlice), test_ext.ToString))
-	if !reflect.DeepEqual(result, slices.Mapping(inputSlice, test_ext.ToString)) {
+	if !reflect.DeepEqual(result, slices_ext.Mapping(inputSlice, test_ext.ToString)) {
 		t.Errorf("ChannelMapping() returned unexpected %s", result)
 	}
 
@@ -30,13 +30,13 @@ func TestChannelMappingWithError(t *testing.T) {
 	}
 
 	inputSlice := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}
-	result := slices.Mapping(ChannelToSlice(ChannelMappingWithError(SliceToChannel(inputSlice), test_ext.ToStringErrIfNegative)), valueFromResult)
-	if !reflect.DeepEqual(result, slices.Mapping(inputSlice, test_ext.ToString)) {
+	result := slices_ext.Mapping(ChannelToSlice(ChannelMappingWithError(SliceToChannel(inputSlice), test_ext.ToStringErrIfNegative)), valueFromResult)
+	if !reflect.DeepEqual(result, slices_ext.Mapping(inputSlice, test_ext.ToString)) {
 		t.Errorf("ChannelMappingWithError() returned unexpected %s", result)
 	}
 
 	inputSlice = []int{1, 2, 3, 4, -5, 6, 7, 8, 9, 0}
-	err := errors.Join(slices.Mapping(ChannelToSlice(ChannelMappingWithError(SliceToChannel(inputSlice), test_ext.ToStringErrIfNegative)), errFromResult)...)
+	err := errors.Join(slices_ext.Mapping(ChannelToSlice(ChannelMappingWithError(SliceToChannel(inputSlice), test_ext.ToStringErrIfNegative)), errFromResult)...)
 	if err == nil {
 		t.Errorf("ChannelMappingWithError() should have returned an error when a wrapped function did")
 	}

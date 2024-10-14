@@ -3,7 +3,7 @@ package multithread
 import (
 	"testing"
 
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/preston-wagner/unicycle/slices_ext"
 	"github.com/preston-wagner/unicycle/test_ext"
 )
 
@@ -13,8 +13,8 @@ func TestMappingFindMultithread(t *testing.T) {
 	if !ok {
 		t.Errorf("MappingFindMultithread() returned unexpected ok=false")
 	}
-	result2 := slices.Mapping(slices.Filter(input, test_ext.Odd), test_ext.ToString)
-	if !slices.Includes(result2, result) {
+	result2 := slices_ext.Mapping(slices_ext.Filter(input, test_ext.Odd), test_ext.ToString)
+	if !slices_ext.Includes(result2, result) {
 		t.Errorf("MappingFindMultithread() returned unexpected %s", result)
 	}
 

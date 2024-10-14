@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/preston-wagner/unicycle/slices_ext"
 )
 
 const loopTimes = 4
@@ -90,7 +90,7 @@ func TestWrapInPromise(t *testing.T) {
 }
 
 func TestAwaitAll(t *testing.T) {
-	result := slices.Mapping(AwaitAll(
+	result := slices_ext.Mapping(AwaitAll(
 		WrapInPromise(func() (int, error) { time.Sleep(duration * 3); return 1, nil }),
 		WrapInPromise(func() (int, error) { time.Sleep(duration * 2); return 2, nil }),
 		WrapInPromise(func() (int, error) { time.Sleep(duration * 1); return 3, nil }),

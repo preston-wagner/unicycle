@@ -1,6 +1,6 @@
 package multithread
 
-import "github.com/preston-wagner/unicycle/slices"
+import "github.com/preston-wagner/unicycle/slices_ext"
 
 // like Filter, but multithreaded
 func FilterMultithread[T any](input []T, filter func(T) bool) []T {
@@ -10,10 +10,10 @@ func FilterMultithread[T any](input []T, filter func(T) bool) []T {
 			ok:    filter(value),
 		}
 	})
-	results = slices.Filter(results, func(res filterResult[T]) bool {
+	results = slices_ext.Filter(results, func(res filterResult[T]) bool {
 		return res.ok
 	})
-	return slices.Mapping(results, func(res filterResult[T]) T {
+	return slices_ext.Mapping(results, func(res filterResult[T]) T {
 		return res.value
 	})
 }
@@ -30,10 +30,10 @@ func FilterMultithreadWithError[T any](input []T, filter func(T) (bool, error)) 
 	if err != nil {
 		return []T{}, err
 	}
-	results = slices.Filter(results, func(res filterResult[T]) bool {
+	results = slices_ext.Filter(results, func(res filterResult[T]) bool {
 		return res.ok
 	})
-	return slices.Mapping(results, func(res filterResult[T]) T {
+	return slices_ext.Mapping(results, func(res filterResult[T]) T {
 		return res.value
 	}), nil
 }

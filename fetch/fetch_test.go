@@ -3,7 +3,7 @@ package fetch
 import (
 	"testing"
 
-	"github.com/preston-wagner/unicycle/slices"
+	"github.com/preston-wagner/unicycle/slices_ext"
 )
 
 func TestFetch(t *testing.T) {
@@ -48,7 +48,7 @@ func TestAppendQueryParams(t *testing.T) {
 		"https://www.google.com/search?q=lorem&ie=UTF-8",
 		"https://www.google.com/search?ie=UTF-8&q=lorem",
 	}
-	if !slices.Includes(okResults, appended) {
+	if !slices_ext.Includes(okResults, appended) {
 		t.Errorf("AppendQueryParams failed: %v", appended)
 	}
 }
