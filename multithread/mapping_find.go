@@ -4,7 +4,7 @@ import (
 	"github.com/nuvi/unicycle/defaults"
 )
 
-// like slices.MappingFind(), but all mutating/filter functions run in parallel in their own goroutines
+// like slices_ext.MappingFind(), but all mutating/filter functions run in parallel in their own goroutines
 // WARNING: unlike Find(), the returned result is not guaranteed to be the first in array order; only the first whose mutator returns
 func MappingFindMultithread[INPUT_TYPE any, OUTPUT_TYPE any](input []INPUT_TYPE, mutatingFilter func(INPUT_TYPE) (OUTPUT_TYPE, bool)) (OUTPUT_TYPE, bool) {
 	total := len(input)

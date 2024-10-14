@@ -4,7 +4,7 @@ import (
 	"reflect"
 
 	"github.com/nuvi/unicycle/sets"
-	"github.com/nuvi/unicycle/slices"
+	"github.com/nuvi/unicycle/slices_ext"
 )
 
 // Shuffle takes a slice and returns a copy of that slice with the elements in a random order
@@ -27,7 +27,7 @@ func shuffleInner[INPUT_TYPE any](input []INPUT_TYPE) []INPUT_TYPE {
 		indexes.Add(i)
 	}
 	// this works because range returns the keys of a map in a random order, and sets are maps
-	return slices.Mapping(indexes.Values(), func(i int) INPUT_TYPE {
+	return slices_ext.Mapping(indexes.Values(), func(i int) INPUT_TYPE {
 		return input[i]
 	})
 }

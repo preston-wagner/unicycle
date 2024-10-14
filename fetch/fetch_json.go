@@ -4,6 +4,8 @@ import (
 	"log"
 
 	"github.com/nuvi/unicycle/defaults"
+	"github.com/nuvi/unicycle/json_ext"
+	"github.com/nuvi/unicycle/string_ext"
 )
 
 // FetchJson simplifies the common task of making a HTTP request to fetch some JSON data and returning it as a struct
@@ -20,7 +22,7 @@ func FetchJson[OUTPUT_TYPE any](rawUrl string, options FetchOptions) (OUTPUT_TYP
 		}
 	}
 
-	body, err := ReadString(response.Body)
+	body, err := string_ext.ReadString(response.Body)
 	if err != nil {
 		return defaults.ZeroValue[OUTPUT_TYPE](), newFetchError(err, response)
 	}
@@ -29,6 +31,6 @@ func FetchJson[OUTPUT_TYPE any](rawUrl string, options FetchOptions) (OUTPUT_TYP
 		log.Println(body)
 	}
 
-	output, err := ReadJsonString[OUTPUT_TYPE](body)
+	output, err := json_ext.ReadJsonString[OUTPUT_TYPE](body)
 	return output, newFetchError(err, response)
 }
