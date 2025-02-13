@@ -1,7 +1,7 @@
 package multithread
 
 import (
-	"github.com/preston-wagner/unicycle/defaults"
+	"github.com/nuvi/unicycle/defaults"
 )
 
 // like slices_ext.MappingFind(), but all mutating/filter functions run in parallel in their own goroutines

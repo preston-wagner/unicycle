@@ -1,7 +1,7 @@
 package multithread
 
 import (
-	"github.com/preston-wagner/unicycle/channels"
+	"github.com/nuvi/unicycle/channels"
 )
 
 // Like ChannelFilter, but runs filters concurrently up to a given limit

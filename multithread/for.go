@@ -1,7 +1,7 @@
 package multithread
 
 import (
-	"github.com/preston-wagner/unicycle/defaults"
+	"github.com/nuvi/unicycle/defaults"
 )
 
 // like a for loop, but each loop runs in its own goroutine simultaneously, returning once all of them are finished
