@@ -4,7 +4,7 @@ import (
 	"errors"
 	"reflect"
 
-	"github.com/nuvi/unicycle/types_ext"
+	"github.com/preston-wagner/unicycle/types_ext"
 )
 
 // ErrorAs simplifies checking the types of errors, specifically in if statements:

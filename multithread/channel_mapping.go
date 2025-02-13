@@ -1,7 +1,7 @@
 package multithread
 
 import (
-	"github.com/nuvi/unicycle/channels"
+	"github.com/preston-wagner/unicycle/channels"
 )
 
 // Like ChannelMapping, but runs mutators concurrently up to a given limit

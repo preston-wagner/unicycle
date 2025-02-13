@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/nuvi/unicycle/slices_ext"
-	"github.com/nuvi/unicycle/test_ext"
+	"github.com/preston-wagner/unicycle/slices_ext"
+	"github.com/preston-wagner/unicycle/test_ext"
 )
 
 func TestMappingFilterMultithread(t *testing.T) {

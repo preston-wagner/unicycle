@@ -3,7 +3,7 @@ package promises
 import (
 	"sync"
 
-	"github.com/nuvi/unicycle/defaults"
+	"github.com/preston-wagner/unicycle/defaults"
 )
 
 // an EmptySafePromise represents a function call that returns no data or errors, but we're waiting on the resolution of anyways

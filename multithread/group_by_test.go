@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/nuvi/unicycle/sets"
+	"github.com/preston-wagner/unicycle/sets"
 )
 
 type keyStruct struct {

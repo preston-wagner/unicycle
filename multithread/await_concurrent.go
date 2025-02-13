@@ -3,7 +3,7 @@ package multithread
 import (
 	"errors"
 
-	"github.com/nuvi/unicycle/defaults"
+	"github.com/preston-wagner/unicycle/defaults"
 )
 
 // AwaitConcurrent simplifies the common task of waiting until tasks on multiple threads have finished

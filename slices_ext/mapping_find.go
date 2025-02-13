@@ -1,6 +1,6 @@
 package slices_ext
 
-import "github.com/nuvi/unicycle/defaults"
+import "github.com/preston-wagner/unicycle/defaults"
 
 // Like Mapping and Find at the same time
 func MappingFind[INPUT_TYPE any, OUTPUT_TYPE any](input []INPUT_TYPE, mutatingFilter func(INPUT_TYPE) (OUTPUT_TYPE, bool)) (OUTPUT_TYPE, bool) {

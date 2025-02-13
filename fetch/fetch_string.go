@@ -1,6 +1,6 @@
 package fetch
 
-import "github.com/nuvi/unicycle/string_ext"
+import "github.com/preston-wagner/unicycle/string_ext"
 
 // FetchString simplifies the common task of making a HTTP request to fetch some plaintext data
 func FetchString(rawUrl string, options FetchOptions) (string, error) {

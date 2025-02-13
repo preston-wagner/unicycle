@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/nuvi/unicycle/error_ext"
+	"github.com/preston-wagner/unicycle/error_ext"
 )
 
 func testTempFolderIsEmpty(t *testing.T) {

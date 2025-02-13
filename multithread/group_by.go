@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/nuvi/unicycle/slices_ext"
+	"github.com/preston-wagner/unicycle/slices_ext"
 )
 
 func addOrAppend[KEY_TYPE comparable, VALUE_TYPE any](output map[KEY_TYPE][]VALUE_TYPE, key KEY_TYPE, value VALUE_TYPE) {

@@ -5,9 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/nuvi/unicycle/error_ext"
-	"github.com/nuvi/unicycle/json_ext"
-	"github.com/nuvi/unicycle/test_ext"
+	"github.com/preston-wagner/unicycle/error_ext"
+	"github.com/preston-wagner/unicycle/json_ext"
+	"github.com/preston-wagner/unicycle/test_ext"
 )
 
 func TestFetchJson(t *testing.T) {

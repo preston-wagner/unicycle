@@ -3,7 +3,7 @@ package promises
 import (
 	"sync"
 
-	"github.com/nuvi/unicycle/slices_ext"
+	"github.com/preston-wagner/unicycle/slices_ext"
 )
 
 // a SafePromise represents data that is not yet available, but will be provided (most likely by a different goroutine) in the future

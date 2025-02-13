@@ -1,6 +1,6 @@
 package slices_ext
 
-import "github.com/nuvi/unicycle/defaults"
+import "github.com/preston-wagner/unicycle/defaults"
 
 // Find accepts a slice of any data type and a filter function, then returns the first item that passes the filter, or false if none do
 // Performance: O(n) (assuming a constant-time filter function)

@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/nuvi/unicycle/sets"
+	"github.com/preston-wagner/unicycle/sets"
 )
 
 func TestShuffle(t *testing.T) {

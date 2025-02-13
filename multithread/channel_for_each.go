@@ -1,7 +1,7 @@
 package multithread
 
 import (
-	"github.com/nuvi/unicycle/channels"
+	"github.com/preston-wagner/unicycle/channels"
 )
 
 // like ChannelForEach, but runs concurrently up to a given limit

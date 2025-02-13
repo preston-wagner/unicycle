@@ -1,6 +1,6 @@
 package multithread
 
-import "github.com/nuvi/unicycle/channels"
+import "github.com/preston-wagner/unicycle/channels"
 
 // Like Every, but runs tests concurrently up to a given limit
 func EveryMultithread[T any](input []T, test func(T) bool, threadCount int) bool {

@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/nuvi/unicycle/error_ext"
-	"github.com/nuvi/unicycle/fetch"
+	"github.com/preston-wagner/unicycle/error_ext"
+	"github.com/preston-wagner/unicycle/fetch"
 )
 
 type WrappingError struct {

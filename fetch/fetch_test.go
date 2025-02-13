@@ -3,7 +3,7 @@ package fetch
 import (
 	"testing"
 
-	"github.com/nuvi/unicycle/slices_ext"
+	"github.com/preston-wagner/unicycle/slices_ext"
 )
 
 func TestFetch(t *testing.T) {

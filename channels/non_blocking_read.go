@@ -1,6 +1,6 @@
 package channels
 
-import "github.com/nuvi/unicycle/defaults"
+import "github.com/preston-wagner/unicycle/defaults"
 
 func NonBlockingRead[T any](incoming chan T) (T, bool) {
 	select {

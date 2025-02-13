@@ -4,9 +4,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/nuvi/unicycle/channels"
-	"github.com/nuvi/unicycle/sets"
-	"github.com/nuvi/unicycle/test_ext"
+	"github.com/preston-wagner/unicycle/channels"
+	"github.com/preston-wagner/unicycle/sets"
+	"github.com/preston-wagner/unicycle/test_ext"
 )
 
 func TestChannelMappingMultithread(t *testing.T) {

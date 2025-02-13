@@ -3,8 +3,8 @@ package random
 import (
 	"reflect"
 
-	"github.com/nuvi/unicycle/sets"
-	"github.com/nuvi/unicycle/slices_ext"
+	"github.com/preston-wagner/unicycle/sets"
+	"github.com/preston-wagner/unicycle/slices_ext"
 )
 
 // Shuffle takes a slice and returns a copy of that slice with the elements in a random order

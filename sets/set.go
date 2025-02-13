@@ -1,8 +1,8 @@
 package sets
 
 import (
-	"github.com/nuvi/unicycle/defaults"
-	"github.com/nuvi/unicycle/maps"
+	"github.com/preston-wagner/unicycle/defaults"
+	"github.com/preston-wagner/unicycle/maps"
 )
 
 // Sets are basically maps with no values; empty structs have a width of 0 bytes

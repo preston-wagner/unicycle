@@ -1,4 +1,4 @@
-module github.com/nuvi/unicycle
+module github.com/preston-wagner/unicycle
 
 go 1.23.6
 

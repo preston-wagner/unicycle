@@ -3,7 +3,7 @@ package multithread
 import (
 	"testing"
 
-	"github.com/nuvi/unicycle/test_ext"
+	"github.com/preston-wagner/unicycle/test_ext"
 )
 
 func TestEveryMultithread(t *testing.T) {

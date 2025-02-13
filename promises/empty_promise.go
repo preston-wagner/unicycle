@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/nuvi/unicycle/slices_ext"
+	"github.com/preston-wagner/unicycle/slices_ext"
 )
 
 // an EmptyPromise represents a function (that may return an error) that has not yet resolved but will in the future

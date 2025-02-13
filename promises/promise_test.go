@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nuvi/unicycle/slices_ext"
+	"github.com/preston-wagner/unicycle/slices_ext"
 )
 
 const loopTimes = 4
