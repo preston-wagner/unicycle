@@ -1,6 +1,6 @@
 package multithread
 
-import "github.com/preston-wagner/unicycle/slices_ext"
+import "github.com/nuvi/unicycle/slices_ext"
 
 // like Filter, but multithreaded
 func FilterMultithread[T any](input []T, filter func(T) bool) []T {

@@ -1,7 +1,7 @@
 package slices_ext
 
 import (
-	"github.com/preston-wagner/unicycle/sets"
+	"github.com/nuvi/unicycle/sets"
 )
 
 // Unique accepts a slice of data, and returns a new slice containing only the first instance of each unique value.

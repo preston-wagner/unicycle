@@ -1,7 +1,7 @@
 package multithread
 
 import (
-	"github.com/preston-wagner/unicycle/slices_ext"
+	"github.com/nuvi/unicycle/slices_ext"
 )
 
 func toMutatorChannel[INPUT_TYPE any, OUTPUT_TYPE any](mutator func(INPUT_TYPE) OUTPUT_TYPE) func(in INPUT_TYPE) chan OUTPUT_TYPE {

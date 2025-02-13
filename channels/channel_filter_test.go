@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/preston-wagner/unicycle/test_ext"
+	"github.com/nuvi/unicycle/test_ext"
 )
 
 func TestChannelFilter(t *testing.T) {

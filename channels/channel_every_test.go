@@ -3,7 +3,7 @@ package channels
 import (
 	"testing"
 
-	"github.com/preston-wagner/unicycle/test_ext"
+	"github.com/nuvi/unicycle/test_ext"
 )
 
 func TestChannelEvery(t *testing.T) {

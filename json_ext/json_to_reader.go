@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/preston-wagner/unicycle/defaults"
+	"github.com/nuvi/unicycle/defaults"
 )
 
 type errReader struct {

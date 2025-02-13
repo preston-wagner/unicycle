@@ -1,6 +1,6 @@
 package multithread
 
-import "github.com/preston-wagner/unicycle/slices_ext"
+import "github.com/nuvi/unicycle/slices_ext"
 
 // like slices_ext.MappingFilter(), but all mutating/filter functions run in parallel in their own goroutines
 func MappingFilterMultithread[INPUT_TYPE any, OUTPUT_TYPE any](input []INPUT_TYPE, mutatingFilter func(INPUT_TYPE) (OUTPUT_TYPE, bool)) []OUTPUT_TYPE {

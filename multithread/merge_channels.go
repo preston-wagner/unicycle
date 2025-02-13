@@ -1,7 +1,7 @@
 package multithread
 
 import (
-	"github.com/preston-wagner/unicycle/slices_ext"
+	"github.com/nuvi/unicycle/slices_ext"
 )
 
 // accepts any number of channels of the same type and returns a single unbuffered channel that pulls from all of them at once

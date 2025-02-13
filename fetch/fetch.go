@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/preston-wagner/unicycle/error_ext"
+	"github.com/nuvi/unicycle/error_ext"
 )
 
 type FetchOptions struct {

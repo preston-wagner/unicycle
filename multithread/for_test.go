@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/preston-wagner/unicycle/sets"
+	"github.com/nuvi/unicycle/sets"
 )
 
 func TestForMultithread(t *testing.T) {

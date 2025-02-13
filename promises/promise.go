@@ -3,7 +3,7 @@ package promises
 import (
 	"sync"
 
-	"github.com/preston-wagner/unicycle/slices_ext"
+	"github.com/nuvi/unicycle/slices_ext"
 )
 
 type Promissory[VALUE_TYPE any] struct {

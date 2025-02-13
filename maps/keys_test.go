@@ -3,8 +3,8 @@ package maps_test
 import (
 	"testing"
 
-	"github.com/preston-wagner/unicycle/maps"
-	"github.com/preston-wagner/unicycle/slices_ext"
+	"github.com/nuvi/unicycle/maps"
+	"github.com/nuvi/unicycle/slices_ext"
 )
 
 func TestKeys(t *testing.T) {
