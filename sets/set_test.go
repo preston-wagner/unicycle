@@ -5,30 +5,52 @@ import (
 	"testing"
 )
 
+var slice = []string{
+	"lorem",
+	"ipsum",
+}
+
 func TestSet(t *testing.T) {
-	set := make(Set[string])
-	set.Add("lorem")
-	set.Add("ipsum")
-	if len(set) != 2 {
+	set := Set[string]{}
+	set.Add(slice...)
+	if len(set) != len(slice) {
 		t.Errorf("Error adding values to Set")
 	}
-	set.Add("ipsum")
+	set.Add(slice[1])
 	if len(set) != 2 {
 		t.Errorf("Error adding redundant values to Set")
 	}
-	set.Remove("lorem")
+	set.Remove(slice[0])
 	if len(set) != 1 {
 		t.Errorf("Error removing values from Set")
 	}
-	set.Remove("lorem")
+	set.Remove(slice[0])
 	if len(set.Values()) != 1 {
 		t.Errorf("Error getting list of values from Set")
 	}
-	if !set.Has("ipsum") {
+	if set.Has(slice[0]) {
 		t.Errorf("Removed value still in set")
 	}
-	if set.Has("lorem") {
+	if !set.Has(slice[1]) {
 		t.Errorf("Existing value not found in set")
+	}
+}
+
+func TestSetFromSlice(t *testing.T) {
+	set := SetFromSlice(slice)
+	if len(set) != len(slice) {
+		t.Errorf("Error adding via SetFromSlice, unexpected length")
+	}
+	for _, value := range slice {
+		if !set.Has(value) {
+			t.Errorf("Existing value not found in set")
+		}
+	}
+	for _, value := range slice {
+		set.Add(value)
+	}
+	if len(set) != len(slice) {
+		t.Errorf("Error adding duplciate values, unexpected length")
 	}
 }
 

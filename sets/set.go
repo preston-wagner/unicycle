@@ -10,7 +10,7 @@ import (
 type Set[T comparable] map[T]struct{}
 
 func SetFromSlice[T comparable](input []T) Set[T] {
-	set := Set[T]{}
+	set := make(Set[T], len(input))
 	set.Add(input...)
 	return set
 }
