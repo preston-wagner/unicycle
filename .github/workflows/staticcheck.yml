@@ -23,12 +23,5 @@ jobs:
           go-version-file: 'go.mod'
         id: go
 
-      - name: install staticcheck
-        run: |
-          cd /tmp && go install honnef.co/go/tools/cmd/staticcheck@latest
-
       - name: make staticcheck
-        env:
-          GOFLAGS: -mod=vendor
-        run: |
-          make staticcheck
+        run: make staticcheck
