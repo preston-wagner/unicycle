@@ -23,13 +23,5 @@ jobs:
           go-version-file: 'go.mod'
         id: go
 
-      - name: install govulncheck
-        run: |
-          export PATH=$PATH:$(go env GOPATH)/bin
-          go install golang.org/x/vuln/cmd/govulncheck@latest
-
       - name: make vuln
-        env:
-          GOFLAGS: -mod=vendor
-        run: |
-          make vuln
+        run: make vuln
