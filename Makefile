@@ -1,4 +1,4 @@
-all: test vet vuln
+all: test staticcheck vet vuln
 
 benchmark:
 	go test ./... -bench=.
@@ -11,10 +11,12 @@ test:
 	go test ./...
 
 staticcheck:
+	go install honnef.co/go/tools/cmd/staticcheck@latest
 	staticcheck -f stylish ./...
 
 vet:
 	go vet ./...
 
 vuln:
+	go install golang.org/x/vuln/cmd/govulncheck@latest
 	govulncheck ./...

@@ -24,13 +24,7 @@ jobs:
         id: go
 
       - name: make test
-        env:
-          GOFLAGS: -mod=vendor
-        run: |
-          make test
+        run: make test
 
       - name: make vet
-        env:
-          GOFLAGS: -mod=vendor
-        run: |
-          make vet
+        run: make vet
