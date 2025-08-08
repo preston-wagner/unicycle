@@ -12,7 +12,7 @@ func SliceToChannel[INPUT_TYPE any](input []INPUT_TYPE) chan INPUT_TYPE {
 
 // ChannelToSlice reads from a channel until it closes, and returns what it read in a slice
 // WARNING: this blocks until the input channel closes, so make sure it does close!
-func ChannelToSlice[INPUT_TYPE any](input chan INPUT_TYPE) []INPUT_TYPE {
+func ChannelToSlice[INPUT_TYPE any](input <-chan INPUT_TYPE) []INPUT_TYPE {
 	output := make([]INPUT_TYPE, 0)
 	for value := range input {
 		output = append(output, value)

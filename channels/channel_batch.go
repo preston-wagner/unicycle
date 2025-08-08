@@ -4,7 +4,7 @@ package channels
 // This is useful for applications like query batching.
 // ChannelBatch prioritizes filling up a batch, but if a receiver is waiting on the output batch and no new inputs are available, a partial batch will be sent instead.
 // When the input channel is closed, the batch will be closed out and sent, and then the output channel will be closed as well.
-func ChannelBatch[T any](input chan T, batchSize int) chan []T {
+func ChannelBatch[T any](input <-chan T, batchSize int) chan []T {
 	output := make(chan []T)
 	go func() {
 		batch := make([]T, 0, batchSize)
@@ -45,7 +45,7 @@ func ChannelBatch[T any](input chan T, batchSize int) chan []T {
 }
 
 // ChannelDebatch is the inverse of ChannelBatch; accepts a channel of slices, and splits each batch slice up into its constituent values.
-func ChannelDebatch[T any](input chan []T) chan T {
+func ChannelDebatch[T any](input <-chan []T) chan T {
 	output := make(chan T)
 	go func() {
 		for chunk := range input {
