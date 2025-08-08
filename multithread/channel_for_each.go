@@ -5,7 +5,7 @@ import (
 )
 
 // like ChannelForEach, but runs concurrently up to a given limit
-func ChannelForEachMultithread[INPUT_TYPE any](input chan INPUT_TYPE, worker func(INPUT_TYPE), threadCount int) {
+func ChannelForEachMultithread[INPUT_TYPE any](input <-chan INPUT_TYPE, worker func(INPUT_TYPE), threadCount int) {
 	workers := make([]func(), 0, threadCount)
 	for i := 0; i < threadCount; i++ {
 		workers = append(workers, func() {
