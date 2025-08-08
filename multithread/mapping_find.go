@@ -2,6 +2,7 @@ package multithread
 
 import (
 	"github.com/preston-wagner/unicycle/defaults"
+	"github.com/preston-wagner/unicycle/semaphore"
 )
 
 // like slices_ext.MappingFind(), but all mutating/filter functions run in parallel in their own goroutines
@@ -11,8 +12,8 @@ func MappingFindMultithread[INPUT_TYPE any, OUTPUT_TYPE any](input []INPUT_TYPE,
 	if total == 0 {
 		return defaults.ZeroValue[OUTPUT_TYPE](), false
 	}
-	counter := NewSemaphoreInt()
-	done := NewSemaphoreBool()
+	counter := semaphore.NewSemaphoreNumber(0)
+	done := semaphore.NewSemaphore(false)
 	success := make(chan OUTPUT_TYPE)
 	failure := make(chan struct{})
 	for _, value := range input {
