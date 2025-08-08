@@ -1,7 +1,9 @@
 package math_ext
 
+import "github.com/nuvi/unicycle/number"
+
 // returns the smallest of the provided values (or 0 if there are none)
-func Min[N Number](input ...N) N {
+func Min[N number.Number](input ...N) N {
 	if len(input) == 0 {
 		return 0
 	} else {

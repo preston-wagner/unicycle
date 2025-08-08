@@ -32,6 +32,10 @@ func (set Set[T]) Has(value T) bool {
 	return ok
 }
 
+func (set Set[T]) Lacks(value T) bool {
+	return !set.Has(value)
+}
+
 func (set Set[T]) Values() []T {
 	return maps.Keys(set)
 }
