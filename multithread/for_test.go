@@ -1,7 +1,10 @@
 package multithread
 
 import (
+	"errors"
 	"math/rand"
+	"strconv"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -32,6 +35,55 @@ func TestForMultithread(t *testing.T) {
 	for _, value := range inputs {
 		if !set.Has(value) {
 			t.Error("ForMultithread missed", value)
+		}
+	}
+
+	ForMultithread(nil, func(value int) {}) // make sure calling with empty array doesn't block
+}
+
+func TestForMultithreadWithError(t *testing.T) {
+	inputs := []int{}
+	const size = 10000
+	for i := 0; i < size; i++ {
+		inputs = append(inputs, i)
+	}
+
+	set := sets.SetFromSlice([]int{})
+	lock := &sync.Mutex{}
+
+	err := ForMultithreadWithError(inputs, func(value int) error {
+		fraction := time.Duration(rand.Int())
+		if fraction != 0 {
+			time.Sleep(time.Second / fraction)
+		}
+		lock.Lock()
+		defer lock.Unlock()
+		set.Add(value)
+		return nil
+	})
+	if err != nil {
+		t.Error(err)
+	}
+
+	for _, value := range inputs {
+		if !set.Has(value) {
+			t.Error("ForMultithreadWithError missed", value)
+		}
+	}
+
+	err = ForMultithreadWithError(inputs, func(value int) error {
+		if value%2 != 0 {
+			return nil
+		}
+		return errors.New(strconv.Itoa(value))
+	})
+	if err == nil {
+		t.Error("ForMultithreadWithError did not return expected error")
+	} else {
+		for _, value := range inputs {
+			if (value%2 == 0) && !strings.Contains(err.Error(), strconv.Itoa(value)) {
+				t.Error("ForMultithreadWithError returned error missed", value)
+			}
 		}
 	}
 
