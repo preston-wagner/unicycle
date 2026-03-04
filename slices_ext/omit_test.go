@@ -20,4 +20,9 @@ func TestOmit(t *testing.T) {
 	if !reflect.DeepEqual(Omit(nil, slice2), []int{}) {
 		t.Error("Omit(nil, *) should return an empty slice")
 	}
+
+	result = Omit(slice1, []int{20, 40, 60, 80})
+	if !reflect.DeepEqual(result, slice1) {
+		t.Errorf("Omit() returned unexpected %d", result)
+	}
 }
