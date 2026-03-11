@@ -5,38 +5,41 @@ import (
 	"testing"
 )
 
-var slice = []string{
-	"lorem",
-	"ipsum",
-}
-
 func TestSet(t *testing.T) {
+	slice := []string{
+		"lorem",
+		"ipsum",
+	}
 	set := Set[string]{}
 	set.Add(slice...)
 	if len(set) != len(slice) {
 		t.Errorf("Error adding values to Set")
 	}
-	set.Add(slice[1])
+	set.Add("ipsum")
 	if len(set) != 2 {
 		t.Errorf("Error adding redundant values to Set")
 	}
-	set.Remove(slice[0])
+	set.Remove("lorem")
 	if len(set) != 1 {
 		t.Errorf("Error removing values from Set")
 	}
-	set.Remove(slice[0])
+	set.Remove("lorem")
 	if len(set.Values()) != 1 {
 		t.Errorf("Error getting list of values from Set")
 	}
-	if set.Has(slice[0]) {
+	if set.Has("lorem") {
 		t.Errorf("Removed value still in set")
 	}
-	if !set.Has(slice[1]) {
+	if !set.Has("ipsum") {
 		t.Errorf("Existing value not found in set")
 	}
 }
 
 func TestSetFromSlice(t *testing.T) {
+	slice := []string{
+		"lorem",
+		"ipsum",
+	}
 	set := SetFromSlice(slice)
 	if len(set) != len(slice) {
 		t.Errorf("Error adding via SetFromSlice, unexpected length")
