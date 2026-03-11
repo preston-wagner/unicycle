@@ -72,7 +72,11 @@ func TestUnion(t *testing.T) {
 }
 
 func TestIntersection(t *testing.T) {
-	intersection := Intersection(SetFromSlice([]int{1, 2, 3, 4}), SetFromSlice([]int{2, 3, 4, 5}), SetFromSlice([]int{3, 4, 5, 6}))
+	intersection := Intersection(
+		SetFromSlice([]int{1, 2, 3, 4}),
+		SetFromSlice([]int{2, 3, 4, 5}),
+		SetFromSlice([]int{3, 4, 5, 6}),
+	)
 	if !reflect.DeepEqual(intersection, SetFromSlice([]int{3, 4})) {
 		t.Error("Intersection failed", intersection)
 	}
@@ -82,7 +86,11 @@ func TestIntersection(t *testing.T) {
 		t.Error("Intersection with no sets should return an empty set")
 	}
 
-	intersection = Intersection(SetFromSlice([]int{1, 2, 3, 4}))
+	original := SetFromSlice([]int{1, 2, 3, 4})
+	intersection = Intersection(original)
+	if reflect.ValueOf(intersection).Pointer() == reflect.ValueOf(original).Pointer() {
+		t.Error("Intersection on a single set should not return a reference to the original")
+	}
 	if !reflect.DeepEqual(intersection, SetFromSlice([]int{1, 2, 3, 4})) {
 		t.Error("Intersection with a single set should return a copy of that set")
 	}
