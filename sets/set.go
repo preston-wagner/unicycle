@@ -40,6 +40,14 @@ func (set Set[T]) Values() []T {
 	return maps.Keys(set)
 }
 
+func (set Set[T]) Copy() Set[T] {
+	copy := make(Set[T], len(set))
+	for value := range set {
+		copy[value] = defaults.Empty
+	}
+	return copy
+}
+
 // Difference returns the set of values contained in the base set but not in any others
 func (set Set[T]) Difference(others ...Set[T]) Set[T] {
 	allOthers := Union(others...)
@@ -80,7 +88,7 @@ func Intersection[T comparable](sets ...Set[T]) Set[T] {
 	if len(sets) == 0 {
 		return Set[T]{}
 	} else if len(sets) == 1 {
-		return SetFromSlice(sets[0].Values())
+		return sets[0].Copy()
 	} else { // len(sets) > 1
 		return sets[0].intersection(sets[1:]...)
 	}
