@@ -32,6 +32,12 @@ map[t]struct{
   "very long value": struct{},
 }
 ```
-can make git diffs difficult to read pretty quickly; `SetFromSlice` saves you from both that and typing `struct{}` over and over.
+can make git diffs difficult to read pretty quickly; `SetFromSlice` saves you from both that and typing `struct{}` over and over:
+```go
+sets.SetFromSlice([]string{
+  "short",
+  "very long value",
+})
+```
 
 See also: https://en.wikipedia.org/wiki/Set_(abstract_data_type)
