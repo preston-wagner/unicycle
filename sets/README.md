@@ -18,16 +18,16 @@ and `.Difference()`, which allows you to compare a set with any number of others
 `sets.Union` and `sets.Intersection` exist as standalone functions.
 
 `sets.SetFromSlice` is also provided to simplify instantiating sets with data.
-Anyone who has used a raw `map[t]struct{}` to implement a set has probably noticed that because of golang's strong opinions
+Anyone who has used a raw `map[T]struct{}` to implement a set has probably noticed that because of golang's strong opinions
 regarding whitespace, adding or removing entries from a hardcoded set _a la_
 ```go
-map[t]struct{
+map[string]struct{
   "short": struct{},
 }
 ```
 to
 ```go
-map[t]struct{
+map[string]struct{
   "short":           struct{},
   "very long value": struct{},
 }
