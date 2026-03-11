@@ -21,13 +21,13 @@ and `.Difference()`, which allows you to compare a set with any number of others
 Anyone who has used a raw `map[T]struct{}` to implement a set has probably noticed that because of golang's strong opinions
 regarding whitespace, adding or removing entries from a hardcoded set _a la_
 ```go
-map[string]struct{
+map[string]struct{}{
   "short": struct{},
 }
 ```
 to
 ```go
-map[string]struct{
+map[string]struct{}{
   "short":           struct{},
   "very long value": struct{},
 }
